@@ -10,28 +10,11 @@
   justify-content: space-around;
 }
 
-.content.homepl>.cadastro>.container {
-  padding: 25px;
-  border-radius: 10px;
-  background-color: white;
+.content.homepl>.cadastro>.whiteThing {
   width: 30vw;
   height: 75%;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .content.homepl>.cadastro .btn {
-  display: inline-block;
   width: 250px;
-  padding: 10px;
-  text-align: center;
-  letter-spacing: 0px;
-  font-size: 1.7em;
-  border-radius: 10px;
-  font-weight: bold;
-  background-color: black;
-  text-decoration: none;
-  color: white;
 }

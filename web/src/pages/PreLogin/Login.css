@@ -4,78 +4,59 @@
   height: 90vh;
 }
 
-.content.login>.container {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
+.content.login>.whiteThing {
   padding: 50px;
-  background-color: white;
   width: 60%;
   height: 75%;
-  box-shadow: -5px 10px 5px #00000029;
   border-radius: 40px;
+  justify-content: flex-start;
 }
 
-.content.login>.container>.inputs>.btn {
+.content.login>div>.inputs>.nav {
   margin-top: 15px;
   text-decoration: none;
   color: black;
 }
 
-.content.login>.container>.cadastro>.btn {
-  display: block;
+.content.login>div>.cadastro>.btn {
   width: 200px;
-  padding: 10px;
-  text-align: center;
-  letter-spacing: 0px;
   font-size: 1.7em;
   border-radius: 28px;
   font-weight: bold;
   background-color: #30E3CA;
-  text-decoration: none;
   color: white;
   float: right;
 }
 
-.content.login>.container>.login {
+.content.login>div>.login {
   display: flex;
   justify-content: flex-end;
   margin-top: 12%;
 }
 
-.content.login>.container>.login>.btn {
-  display: block;
+.content.login>div>.login>.btn {
   width: 300px;
-  padding: 10px;
-  text-align: center;
-  letter-spacing: 0px;
   font-size: 2.5em;
   border-radius: 40px;
   font-weight: bold;
   background-color: #30E3CA;
-  text-decoration: none;
   color: white;
 }
 
-.content.login>.container>.inputs {
+.content.login>div>.login>.btn:active {
+  background-color: #84ffef;
+}
+
+.content.login>div>.cadastro>.btn:active {
+  background-color: #84ffef;
+}
+
+.content.login>div>.inputs {
   display: flex;
   flex-direction: column;
   margin-top: 30px;
 }
 
-.content.login>.container .input-space {
+.content.login>div .input-space {
   height: 5vh;
-  width: 100%;
-  border: 1px solid #30E3CA;
-  border-radius: 40px;
-  font-size: 1.4em;
-  padding-left: 15px;
-}
-
-.content.login>.container .input-label {
-  display: flex;
-  flex-direction: column;
-  user-select: none;
-  margin-top: 30px;
-  color: darkgray;
 }

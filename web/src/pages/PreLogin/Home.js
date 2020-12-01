@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../components/Button';
+import WhiteThing from '../../components/WhiteThing';
 
 import './Home.css';
 
@@ -10,14 +11,14 @@ export default function Home() {
 
       </div>
       <div className='cadastro'>
-        <div className='container'>
+        <WhiteThing>
           <span>Texto</span>
-          <Button to='' name='Cliente' />
-        </div>
-        <div className='container'>
+          <Button to='/cadastro/cliente' name='Cliente' />
+        </WhiteThing>
+        <WhiteThing>
           <span>Texto</span>
-          <Button to='' name='Maid' />
-        </div>
+          <Button to='/cadastro/maid' name='Maid' />
+        </WhiteThing>
       </div>
     </div>
   );

@@ -1,0 +1,68 @@
+.content.supsteps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 90vh;
+}
+
+.content.supsteps>span {
+  display: block;
+  font-size: 2em;
+  align-self: center;
+  margin-bottom: 0.5em;
+}
+
+.content.supsteps>.whiteThing {
+  padding: 50px;
+  width: 70vw;
+  height: 65vh;
+  border-radius: 40px;
+}
+
+.content.supsteps .input-space {
+  height: 6vh;
+}
+
+.content.supsteps .avanco {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content.supsteps .dropdowns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px 25px;
+}
+
+.content.supsteps .cadastro-preco {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.content.supsteps .cadastro-preco>div {
+  height: 12vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.content.supsteps .nav {
+  align-self: center;
+}
+
+.content.supsteps .progression {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.content.supsteps .half {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

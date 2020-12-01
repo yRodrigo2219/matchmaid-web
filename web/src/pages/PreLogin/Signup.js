@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../components/Button';
+import WhiteThing from '../../components/WhiteThing';
 
 import './Signup.css';
 
@@ -9,14 +10,14 @@ export default class Signup extends Component {
       <div className='content signup'>
         <span>Escolha Seu Perfil</span>
         <div className='perfil'>
-          <div className='container'>
+          <WhiteThing className='shadow'>
             <span>temp</span>
             <Button to='/cadastro/cliente' name='Cliente' />
-          </div>
-          <div className='container'>
+          </WhiteThing>
+          <WhiteThing className='shadow'>
             <span>temp</span>
             <Button to='/cadastro/maid' name='Maid' />
-          </div>
+          </WhiteThing>
         </div>
       </div>
     );
