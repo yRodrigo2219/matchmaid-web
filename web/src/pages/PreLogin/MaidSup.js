@@ -85,6 +85,10 @@ export default class MaidSup extends Component {
                     <Input name='Número' type='text' onChange={this.handleInputChange} id='nmr' />
                     <Input name='Complemento' type='text' onChange={this.handleInputChange} id='compl' />
                   </div>
+                  <div className='half'>
+                    <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' />
+                    <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' />
+                  </div>
                 </div>
                 <div className='avanco'>
                   <NavButton to='/cadastro/maid/1' name='<' />

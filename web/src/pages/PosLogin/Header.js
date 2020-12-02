@@ -11,11 +11,11 @@ export default function Header() {
         <NavButton to='/' name='Inicio' />
       </div>
       <div className='h-seja'>
-        <NavButton to='/cadastro/maid' name='Seja uma Maid!' />
+        
       </div>
       <div className='h-extra'>
-        <NavButton to='/login' name='Login' />
-        <NavButton to='/cadastro' name='Cadastro' />
+        <NavButton to='/perfil' name='Perfil' />
+        <NavButton to='/logout' name='Sair' />
       </div>
     </div >
   );

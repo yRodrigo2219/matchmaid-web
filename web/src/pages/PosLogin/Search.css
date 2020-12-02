@@ -1,0 +1,46 @@
+.content.search {
+  display: flex;
+  height: 90vh;
+  flex-direction: row;
+}
+
+.content.search .filter {
+  flex: 3;
+  max-width: 400px;
+  background-color: darkgray;
+  display: flex;
+  justify-content: center;
+}
+
+.content.search .map {
+  flex: 7;
+}
+
+.content.search .filter .whiteThing {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 2em;
+  height: 85%;
+  width: 90%;
+}
+
+.content.search .filter .whiteThing>span {
+  text-align: center;
+}
+
+.content.search .filter .category {
+  font-size: 0.7em;
+  margin-top: 25px;
+}
+
+.content.search .filter .category>label{
+  user-select: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.content.search .filter .category>label>input{
+  margin-right: 10px;
+}
+

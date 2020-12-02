@@ -7,13 +7,16 @@ import Login from './pages/PreLogin/Login';
 import Signup from './pages/PreLogin/Signup';
 import MaidSup from './pages/PreLogin/MaidSup';
 import ClienteSup from './pages/PreLogin/ClienteSup';
+import Perfil from './pages/PosLogin/Perfil';
+import Search from './pages/PosLogin/Search';
+import Header from './pages/PosLogin/Header';
 
 export default class Routes extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      auth: false,
+      auth: true,
     };
   }
 
@@ -25,12 +28,16 @@ export default class Routes extends Component {
     return (
       <BrowserRouter>
         {
-          this.state.auth ? 'lgd' : <HeaderPL />
+          this.state.auth ? <Header /> : <HeaderPL />
         }
         {
           this.state.auth
             ?
-            'Logado'
+            <Switch>
+              <Route path='/'>
+                <Search />
+              </Route>
+            </Switch>
             :
             <Switch>
               <Route path='/login'>

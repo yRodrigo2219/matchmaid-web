@@ -1,0 +1,279 @@
+[
+  {
+    "cpf": "000.000.000-01",
+    "name": "Test User",
+    "email": "email@test.com",
+    "password": "12345678",
+    "phoneNumber": "00000000000000",
+    "birthDate": "1999-06-26T18:25:43",
+    "status": false,
+    "location": {
+        "maidCpf": "000.000.000-01",
+        "latitude": -14.525221,
+        "longitude": -40.363233,
+        "street": "Test Street",
+        "houseNumber": "00",
+        "neighborhood": "Test",
+        "city": "Test City",
+        "cep": "00000-000",
+        "uf": "TS"
+    },
+    "disponibleDays": {
+        "maidCpf": "000.000.000-01",
+        "monday": false,
+        "tuesday": false,
+        "wednesday": true,
+        "thursday": false,
+        "friday": false,
+        "saturday": true,
+        "sunday": true
+    },
+    "disponiblePeriod": {
+        "maidCpf": "000.000.000-01",
+        "morning": true,
+        "afternoon": true,
+        "night": false
+    },
+    "services": {
+        "maidCpf": "000.000.000-01",
+        "nanny": false,
+        "careHouse": false,
+        "cleanHouse": true,
+        "ironClothes": true,
+        "washClothes": true,
+        "washDishes": true,
+        "cook": false
+    }
+},
+{
+  "cpf": "000.000.000-02",
+  "name": "Test User",
+  "email": "email@test.com",
+  "password": "12345678",
+  "phoneNumber": "00000000000000",
+  "birthDate": "1999-06-26T18:25:43",
+  "status": false,
+  "location": {
+      "maidCpf": "000.000.000-02",
+      "latitude": -14.525221,
+      "longitude": -40.363233,
+      "street": "Test Street",
+      "houseNumber": "00",
+      "neighborhood": "Test",
+      "city": "Test City",
+      "cep": "00000-000",
+      "uf": "TS"
+  },
+  "disponibleDays": {
+      "maidCpf": "000.000.000-02",
+      "monday": false,
+      "tuesday": false,
+      "wednesday": true,
+      "thursday": false,
+      "friday": false,
+      "saturday": true,
+      "sunday": true
+  },
+  "disponiblePeriod": {
+      "maidCpf": "000.000.000-02",
+      "morning": true,
+      "afternoon": true,
+      "night": false
+  },
+  "services": {
+      "maidCpf": "000.000.000-02",
+      "nanny": false,
+      "careHouse": false,
+      "cleanHouse": true,
+      "ironClothes": true,
+      "washClothes": true,
+      "washDishes": true,
+      "cook": false
+  }
+},
+{
+  "cpf": "000.000.000-03",
+  "name": "Test User",
+  "email": "email@test.com",
+  "password": "12345678",
+  "phoneNumber": "00000000000000",
+  "birthDate": "1999-06-26T18:25:43",
+  "status": false,
+  "location": {
+      "maidCpf": "000.000.000-03",
+      "latitude": -14.525221,
+      "longitude": -40.363233,
+      "street": "Test Street",
+      "houseNumber": "00",
+      "neighborhood": "Test",
+      "city": "Test City",
+      "cep": "00000-000",
+      "uf": "TS"
+  },
+  "disponibleDays": {
+      "maidCpf": "000.000.000-03",
+      "monday": false,
+      "tuesday": false,
+      "wednesday": true,
+      "thursday": false,
+      "friday": false,
+      "saturday": true,
+      "sunday": true
+  },
+  "disponiblePeriod": {
+      "maidCpf": "000.000.000-03",
+      "morning": true,
+      "afternoon": true,
+      "night": false
+  },
+  "services": {
+      "maidCpf": "000.000.000-03",
+      "nanny": false,
+      "careHouse": false,
+      "cleanHouse": true,
+      "ironClothes": true,
+      "washClothes": true,
+      "washDishes": true,
+      "cook": false
+  }
+},
+{
+  "cpf": "000.000.000-04",
+  "name": "Test User",
+  "email": "email@test.com",
+  "password": "12345678",
+  "phoneNumber": "00000000000000",
+  "birthDate": "1999-06-26T18:25:43",
+  "status": false,
+  "location": {
+      "maidCpf": "000.000.000-04",
+      "latitude": -14.525221,
+      "longitude": -40.363233,
+      "street": "Test Street",
+      "houseNumber": "00",
+      "neighborhood": "Test",
+      "city": "Test City",
+      "cep": "00000-000",
+      "uf": "TS"
+  },
+  "disponibleDays": {
+      "maidCpf": "000.000.000-04",
+      "monday": false,
+      "tuesday": false,
+      "wednesday": true,
+      "thursday": false,
+      "friday": false,
+      "saturday": true,
+      "sunday": true
+  },
+  "disponiblePeriod": {
+      "maidCpf": "000.000.000-04",
+      "morning": true,
+      "afternoon": true,
+      "night": false
+  },
+  "services": {
+      "maidCpf": "000.000.000-04",
+      "nanny": false,
+      "careHouse": false,
+      "cleanHouse": true,
+      "ironClothes": true,
+      "washClothes": true,
+      "washDishes": true,
+      "cook": false
+  }
+},
+{
+  "cpf": "000.000.000-05",
+  "name": "Test User",
+  "email": "email@test.com",
+  "password": "12345678",
+  "phoneNumber": "00000000000000",
+  "birthDate": "1999-06-26T18:25:43",
+  "status": false,
+  "location": {
+      "maidCpf": "000.000.000-05",
+      "latitude": -14.525221,
+      "longitude": -40.363233,
+      "street": "Test Street",
+      "houseNumber": "00",
+      "neighborhood": "Test",
+      "city": "Test City",
+      "cep": "00000-000",
+      "uf": "TS"
+  },
+  "disponibleDays": {
+      "maidCpf": "000.000.000-05",
+      "monday": false,
+      "tuesday": false,
+      "wednesday": true,
+      "thursday": false,
+      "friday": false,
+      "saturday": true,
+      "sunday": true
+  },
+  "disponiblePeriod": {
+      "maidCpf": "000.000.000-05",
+      "morning": true,
+      "afternoon": true,
+      "night": false
+  },
+  "services": {
+      "maidCpf": "000.000.000-05",
+      "nanny": false,
+      "careHouse": false,
+      "cleanHouse": true,
+      "ironClothes": true,
+      "washClothes": true,
+      "washDishes": true,
+      "cook": false
+  }
+},
+{
+  "cpf": "000.000.000-06",
+  "name": "Test User",
+  "email": "email@test.com",
+  "password": "12345678",
+  "phoneNumber": "00000000000000",
+  "birthDate": "1999-06-26T18:25:43",
+  "status": false,
+  "location": {
+      "maidCpf": "000.000.000-06",
+      "latitude": -14.525221,
+      "longitude": -40.363233,
+      "street": "Test Street",
+      "houseNumber": "00",
+      "neighborhood": "Test",
+      "city": "Test City",
+      "cep": "00000-000",
+      "uf": "TS"
+  },
+  "disponibleDays": {
+      "maidCpf": "000.000.000-06",
+      "monday": false,
+      "tuesday": false,
+      "wednesday": true,
+      "thursday": false,
+      "friday": false,
+      "saturday": true,
+      "sunday": true
+  },
+  "disponiblePeriod": {
+      "maidCpf": "000.000.000-06",
+      "morning": true,
+      "afternoon": true,
+      "night": false
+  },
+  "services": {
+      "maidCpf": "000.000.000-06",
+      "nanny": false,
+      "careHouse": false,
+      "cleanHouse": true,
+      "ironClothes": true,
+      "washClothes": true,
+      "washDishes": true,
+      "cook": false
+  }
+}
+
+]
