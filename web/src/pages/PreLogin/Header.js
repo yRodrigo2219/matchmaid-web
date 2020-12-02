@@ -15,7 +15,6 @@ export default function Header() {
         <NavButton to='/cadastro/maid' name='Seja uma Maid!' />
       </div>
       <div className='h-extra'>
-        <NavButton to='/busca' name='Buscar'/>
         <NavButton to='/login' name='Login' />
         <NavButton to='/cadastro' name='Cadastro' />
       </div>

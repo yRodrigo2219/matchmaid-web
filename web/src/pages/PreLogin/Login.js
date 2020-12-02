@@ -15,7 +15,7 @@ export default function Login() {
         </div>
         <div className='inputs'>
           <Input name='Email' type='text' />
-          <Input name='Senha' type='password' />
+          <Input name='Senha' type='text' />
           <NavButton to='/login' name='Esqueci minha senha' />
         </div>
         <div className='login'>

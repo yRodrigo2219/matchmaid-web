@@ -7,7 +7,6 @@ import Login from './pages/PreLogin/Login';
 import Signup from './pages/PreLogin/Signup';
 import MaidSup from './pages/PreLogin/MaidSup';
 import ClienteSup from './pages/PreLogin/ClienteSup';
-import Search from './pages/PosLogin/Busca'
 
 export default class Routes extends Component {
   constructor(props) {
@@ -45,9 +44,6 @@ export default class Routes extends Component {
               </Route>
               <Route path='/cadastro'>
                 <Signup />
-              </Route>
-              <Route path='/busca'>
-                <Search/>
               </Route>
               <Route path='/'>
                 <HomePL />
