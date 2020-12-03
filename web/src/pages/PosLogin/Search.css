@@ -13,6 +13,7 @@
 }
 
 .content.search .map {
+  position: relative ;
   flex: 7;
 }
 
@@ -44,3 +45,6 @@
   margin-right: 10px;
 }
 
+.content.search .map .tooltip{
+  text-align: center;
+}
