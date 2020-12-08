@@ -1,0 +1,32 @@
+.content.perfil-visi>div {
+  display: flex;
+  height: 90vh;
+  flex-direction: row;
+}
+
+.content.perfil-visi .p1 {
+  flex: 25%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+}
+
+.content.perfil-visi .p1>.foto {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.content.perfil-visi .p1>.categ {}
+
+.content.perfil-visi .foto img {
+  max-width: 150px;
+}
+
+.content.perfil-visi .p2 {
+  flex: 50%;
+}
+
+.content.perfil-visi .p3 {
+  flex: 25%;
+}

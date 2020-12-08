@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import WhiteThing from '../../components/WhiteThing';
 import { StaticMap } from 'react-map-gl';
 import { IconLayer } from '@deck.gl/layers'
+import { DataFilterExtension } from '@deck.gl/extensions';
 import DeckGL from '@deck.gl/react';
 import { MapView } from '@deck.gl/core';
 import { Redirect } from 'react-router-dom';
@@ -14,16 +15,26 @@ export default class Search extends Component {
     super(props);
 
     this.state = {
-      rota: ''
+      rota: '',
+      baba: false,
+      ranger: [[0, 1000], [0, 0]],
+      data: [],
     };
   }
 
-  data = [
-    { "coordinates": [-40.361861, -14.524967], "name": 'João Pedro', "number": '7792002396' },
-    { "coordinates": [-40.360822, -14.527118], "name": 'Rodrigo Rico', "number": '7799999999' },
-    { "coordinates": [-40.374464, -14.523845], "name": 'Enzo Burgues', "number": '7788888888' },
-    { "coordinates": [-40.363101, -14.525303], "name": 'Shambino Bow', "number": '7766666666' }
-  ]
+  handleChangeBox = (event) => {
+    let check = event.target.name;
+    this.setState({ [check]: !this.state[check] });
+    this.setState({ data: this.state.data.concat() });
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3333/get/maids')
+      .then(res => res.json())
+      .then(res => this.setState({ data: res }));
+  }
+
+  dataFilter = new DataFilterExtension({ filterSize: 2 });
 
   MAP_VIEW = new MapView({ repeat: true });
 
@@ -32,7 +43,7 @@ export default class Search extends Component {
   INITIAL_VIEW_STATE = {
     longitude: -40.361861,
     latitude: -14.524967,
-    zoom: 15,
+    zoom: 2,
     maxZoom: 20,
   };
 
@@ -40,17 +51,7 @@ export default class Search extends Component {
     marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
   };
 
-  layer = new IconLayer({
-    id: 'icon-layer',
-    data: this.data,
-    pickable: true,
-    iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
-    iconMapping: this.ICON_MAPPING,
-    sizeScale: 50,
-    getIcon: d => 'marker',
-    getPosition: d => d.coordinates,
-    getColor: d => [Math.sqrt(d.exits), 200, 80]
-  });
+  //layer = 
 
   render() {
     return (
@@ -63,7 +64,7 @@ export default class Search extends Component {
                 <span>Serviços</span>
                 <hr />
                 <label>
-                  <input type='checkbox' />
+                  <input type='checkbox' checked={this.state.baba} name='baba' onChange={this.handleChangeBox} />
                   Babá
                 </label>
               </div>
@@ -82,7 +83,28 @@ export default class Search extends Component {
         <div className='map'>
           {
             this.state.rota === '' ?
-              <DeckGL layers={[this.layer]}
+              <DeckGL layers={[new IconLayer({
+                id: 'icon-layer',
+                data: this.state.data,
+                pickable: true,
+                iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+                iconMapping: this.ICON_MAPPING,
+                sizeScale: 50,
+                getIcon: d => 'marker',
+                getPosition: d => {
+                  return [d.locations.latitude, d.locations.longitude];
+                },
+                getColor: d => [Math.sqrt(d.exits), 200, 80],
+
+                // Filtro
+                getFilterValue: f => {
+                  let n = 0;
+                  n += ((this.state.baba && !f.services.nanny) ? 1 : 0);
+                  return [f.preco, n];
+                },
+                filterRange: this.state.ranger,
+                extensions: [this.dataFilter]
+              })]}
                 views={this.MAP_VIEW}
                 initialViewState={this.INITIAL_VIEW_STATE}
                 controller={{ dragRotate: false }}
@@ -94,10 +116,10 @@ export default class Search extends Component {
                 }}
                 getTooltip={({ object }) => object && {
                   html: `<div class="tooltip"> <img src='https://image.flaticon.com/icons/png/128/51/51256.png?ga=GA1.2.1391951570.1603459063'>
-            <img/>
-            <h2>${object.name}<h2>
-            <h4>${object.number}<h4>
-            <div/>`}}>
+                  <img/>
+                  <h2>${object.maid.name}<h2>
+                  <h4>${object.maid.phoneNumber}<h4>
+                  <div/>`}}>
                 <StaticMap reuseMaps mapStyle={this.MAP_STYLE} preventStyleDiffing={true} />
               </DeckGL>
               :

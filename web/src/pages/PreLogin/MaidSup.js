@@ -52,6 +52,11 @@ export default class MaidSup extends Component {
                       <CheckItem label='Sabado' />
                       <CheckItem label='Domingo' />
                     </DropDownCheck>
+                    <DropDownCheck id='cadastro-periodo' label='Dias disponíveis'>
+                      <CheckItem label='Dia' />
+                      <CheckItem label='Tarde' />
+                      <CheckItem label='Noite' />
+                    </DropDownCheck>
                     <DropDownCheck id='cadastro-servico' label='Serviços prestados'>
                       <CheckItem label='Babá' />
                       <CheckItem label='Limpar Casa' />
@@ -105,6 +110,10 @@ export default class MaidSup extends Component {
                   <Input name='Email' type='email' onChange={this.handleInputChange} id='email' />
                   <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' />
                   <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' />
+                  <div className='half'>
+                    <Input name='Celular' type='text' onChange={this.handleInputChange} id='phone' />
+                    <Input name='Data' type='text' onChange={this.handleInputChange} id='birth' />
+                  </div>
                 </div>
                 <div className='avanco'>
                   <NavButton to='/cadastro/maid' name='' />
