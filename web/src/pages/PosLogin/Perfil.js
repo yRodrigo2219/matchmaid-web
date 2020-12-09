@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import WhiteThing from "../../components/WhiteThing";
 import NavButton from "../../components/NavButton";
+import Tag from "../../components/Tag";
 
 import './Perfil.css';
 
@@ -23,13 +24,13 @@ export default class Perfil extends Component {
     return (
       <div className='servico'>
         <h2>Serviços</h2>
-        {s.nanny ? <span>Babá</span> : ''}
-        {s.cleanHouse ? <span>Limpa a Casa</span> : ''}
-        {s.careHouse ? <span>Cuida da Casa</span> : ''}
-        {s.ironClothes ? <span>Passa a Roupa</span> : ''}
-        {s.washClothes ? <span>Lava a Roupa</span> : ''}
-        {s.washDishes ? <span>Lava a Louça</span> : ''}
-        {s.cook ? <span>Cozinha</span> : ''}
+        {s.nanny ? <Tag name="Baba" color='red'/> : ''}
+        {s.cleanHouse ? <Tag name="Limpar Casa" color='cian'/> : ''}
+        {s.careHouse ? <Tag name="Cuida da Casa" color='blue'/> : ''}
+        {s.ironClothes ? <Tag name="Passa a Roupa" color='red'/> : ''}
+        {s.washClothes ? <Tag name="Lava a Roupa" color='cian'/> : ''}
+        {s.washDishes ? <Tag name="Lava a Louça" color='blue'/> : ''}
+        {s.cook ? <Tag name="Cozinha" color='red'/> : ''}
       </div>
     );
   }

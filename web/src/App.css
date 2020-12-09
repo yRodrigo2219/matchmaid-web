@@ -158,3 +158,25 @@
   background: black;
   cursor: pointer;
 }
+
+.tag {
+  display: inline-block;
+  background:  0% 0% no-repeat padding-box;
+  font-size: 18px;
+  color: white;
+  padding: 7px;
+  margin: 3px;
+  border-radius: 25px;
+}
+
+.tag.red {
+  background-color: #FF7272;
+}
+
+.tag.cian {
+  background-color: #70FFDD;
+}
+
+.tag.blue {
+  background-color: #219FFF;
+}

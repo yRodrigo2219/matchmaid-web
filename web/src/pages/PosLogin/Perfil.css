@@ -51,7 +51,7 @@
 }
 
 .content.perfil-visi .p2 .whiteThing.contatos {
-  height: 20%;
+  min-height: 20%;
   justify-content: flex-start;
 }
 
@@ -63,11 +63,11 @@
 }
 
 .content.perfil-visi .p2 .whiteThing.interacoes {
-  height: 15%;
+  min-height: 15%;
 }
 
 .content.perfil-visi .p2 .whiteThing.avaliacoes {
-  height: 25%;
+  min-height: 25%;
 }
 
 .content.perfil-visi .foto img {
@@ -110,13 +110,5 @@
 }
 
 .content.perfil-visi .p3 .servico {
-  display: inline;
-}
-
-.content.perfil-visi .p3 .servico>span {
   display: inline-block;
-  background: #30E3CA 0% 0% no-repeat padding-box;
-  padding: 7px;
-  margin: 3px;
-  border-radius: 25px;
 }
