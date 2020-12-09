@@ -1,6 +1,6 @@
 .content.perfil-visi>div {
   display: flex;
-  height: 90vh;
+  min-height: 90vh;
   flex-direction: row;
 }
 
@@ -34,6 +34,10 @@
   font-size: 1.4em;
   font-family: 'Montserrat Alternates', sans-serif;
   font-weight: 500;
+}
+
+.content.perfil-visi .p1>.categ .nav {
+  margin-bottom: 16px;
 }
 
 .content.perfil-visi .p2 .whiteThing {
@@ -110,5 +114,41 @@
 }
 
 .content.perfil-visi .p3 .servico {
+  display: inline;
+}
+
+.content.perfil-visi .p3 .servico>.tag {
   display: inline-block;
+  background: #30E3CA 0% 0% no-repeat padding-box;
+  padding: 7px;
+  margin: 3px;
+  border-radius: 25px;
+}
+
+.content.perfil-visi .p3 .servico>.tag.red {
+  background: #FF7272 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.blue {
+  background:#219FFF 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.lightblue {
+  background:#65DBFC 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.yellow {
+  background:#FFE791 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.orange {
+  background: #ff966b 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.purple {
+  background: #A777EB 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.cyan {
+  background: #70FFDD 0% 0% no-repeat padding-box;
 }

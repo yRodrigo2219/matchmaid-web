@@ -6,7 +6,7 @@ import NavButton from '../../components/NavButton';
 
 import './Login.css';
 
-export default function Login() {
+export default function Login(props) {
   return (
     <div className='content login'>
       <WhiteThing className='shadow'>
@@ -19,7 +19,7 @@ export default function Login() {
           <NavButton to='/login' name='Esqueci minha senha' />
         </div>
         <div className='login'>
-          <Button to='/login' name='Entrar' />
+          <Button to='/login' name='Entrar' onClick={props.login} />
         </div>
       </WhiteThing>
     </div>
