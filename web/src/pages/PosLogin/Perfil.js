@@ -80,10 +80,10 @@ export default class Perfil extends Component {
         {s.nanny ? <ColorTag color='cyan'>Babá</ColorTag> : ''}
         {s.cleanHouse ? <ColorTag color='red'>Limpa a Casa</ColorTag> : ''}
         {s.careHouse ? <ColorTag color='purple'>Cuida da Casa</ColorTag> : ''}
-        {s.ironClothes ? <ColorTag color='pink'>Passa a Roupa</ColorTag> : ''}
-        {s.washClothes ? <ColorTag color='purple'>Lava a Roupa</ColorTag> : ''}
-        {s.washDishes ? <ColorTag color='pink'>Lava a Louça</ColorTag> : ''}
-        {s.cook ? <ColorTag color='cyan'>Cozinha</ColorTag> : ''}
+        {s.ironClothes ? <ColorTag color='yellow'>Passa a Roupa</ColorTag> : ''}
+        {s.washClothes ? <ColorTag color='lightblue'>Lava a Roupa</ColorTag> : ''}
+        {s.washDishes ? <ColorTag color='orange'>Lava a Louça</ColorTag> : ''}
+        {s.cook ? <ColorTag color='blue'>Cozinha</ColorTag> : ''}
       </div>
     );
   }

@@ -55,7 +55,7 @@
 }
 
 .content.perfil-visi .p2 .whiteThing.contatos {
-  height: 20%;
+  max-height: 12em;
   justify-content: flex-start;
 }
 
@@ -67,11 +67,11 @@
 }
 
 .content.perfil-visi .p2 .whiteThing.interacoes {
-  height: 15%;
+  min-height: 15%;
 }
 
 .content.perfil-visi .p2 .whiteThing.avaliacoes {
-  height: 25%;
+  min-height: 25%;
 }
 
 .content.perfil-visi .foto img {
@@ -126,17 +126,29 @@
 }
 
 .content.perfil-visi .p3 .servico>.tag.red {
-  background: red 0% 0% no-repeat padding-box;
+  background: #FF7272 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.blue {
+  background:#219FFF 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.lightblue {
+  background:#65DBFC 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.yellow {
+  background:#FFE791 0% 0% no-repeat padding-box;
+}
+
+.content.perfil-visi .p3 .servico>.tag.orange {
+  background: #ff966b 0% 0% no-repeat padding-box;
 }
 
 .content.perfil-visi .p3 .servico>.tag.purple {
-  background: rgb(139, 139, 255) 0% 0% no-repeat padding-box;
+  background: #A777EB 0% 0% no-repeat padding-box;
 }
 
 .content.perfil-visi .p3 .servico>.tag.cyan {
-  background: #30E3CA 0% 0% no-repeat padding-box;
-}
-
-.content.perfil-visi .p3 .servico>.tag.pink {
-  background: pink 0% 0% no-repeat padding-box;
+  background: #70FFDD 0% 0% no-repeat padding-box;
 }
