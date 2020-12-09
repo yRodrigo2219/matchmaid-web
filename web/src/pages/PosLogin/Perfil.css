@@ -15,18 +15,108 @@
   align-self: center;
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 
-.content.perfil-visi .p1>.categ {}
+.content.perfil-visi .p1>.foto>span {
+  margin-top: 0.7em;
+  margin-left: 0.4em;
+  font-size: 1.5em;
+  font-family: 'Mitr', sans-serif;
+  font-weight: 400;
+}
+
+.content.perfil-visi .p1>.categ {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  font-size: 1.4em;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 500;
+}
+
+.content.perfil-visi .p2 .whiteThing {
+  margin-top: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px #00000017;
+  padding: 12px;
+}
+
+.content.perfil-visi .p2 .whiteThing>h2 {
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  font-family: 'Mitr', sans-serif;
+  font-weight: 400;
+}
+
+.content.perfil-visi .p2 .whiteThing.contatos {
+  height: 20%;
+  justify-content: flex-start;
+}
+
+.content.perfil-visi .p2 .whiteThing.contatos>h4 {
+  margin-top: 8px;
+  font-weight: 400;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 1.1em;
+}
+
+.content.perfil-visi .p2 .whiteThing.interacoes {
+  height: 15%;
+}
+
+.content.perfil-visi .p2 .whiteThing.avaliacoes {
+  height: 25%;
+}
 
 .content.perfil-visi .foto img {
-  max-width: 150px;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
 }
 
 .content.perfil-visi .p2 {
   flex: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
 .content.perfil-visi .p3 {
   flex: 25%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px;
+  align-items: center;
+}
+
+.content.perfil-visi .p3 h2 {
+  font-size: 1.5em;
+  font-family: 'Mitr', sans-serif;
+  font-weight: 400;
+}
+
+.content.perfil-visi .p3 span {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 1.1em;
+  font-weight: 400;
+}
+
+.content.perfil-visi .p3>div {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.content.perfil-visi .p3 .servico {
+  display: inline;
+}
+
+.content.perfil-visi .p3 .servico>span {
+  display: inline-block;
+  background: #30E3CA 0% 0% no-repeat padding-box;
+  padding: 7px;
+  margin: 3px;
+  border-radius: 25px;
 }
