@@ -110,12 +110,13 @@ export default class Search extends Component {
                 controller={{ dragRotate: false }}
                 onClick={({ object }) => {
                   if (object != null) {
+                    localStorage.setItem('owner', 'false');
                     localStorage.setItem('perfil', JSON.stringify(object));
                     this.setState({ rota: '/perfil' });
                   }
                 }}
                 getTooltip={({ object }) => object && {
-                  html: `<div class="tooltip"> <img src='https://image.flaticon.com/icons/png/128/51/51256.png?ga=GA1.2.1391951570.1603459063'>
+                  html: `<div class="tooltip"> <img src='https://image.flaticon.com/icons/png/128/51/51256.png?ga=GA1.2.1391951570.1603459063' alt='Foto'>
                   <img/>
                   <h2>${object.maid.name}<h2>
                   <h4>${object.maid.phoneNumber}<h4>

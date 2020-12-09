@@ -16,8 +16,21 @@ export default class Routes extends Component {
     super(props);
 
     this.state = {
-      auth: true,
+      auth: ('true' === localStorage.getItem('logged')),
     };
+
+    this.logoutUser = this.logoutUser.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  logoutUser() {
+    localStorage.setItem('logged', 'false');
+    this.setState({ auth: false });
+  }
+
+  loginUser() {
+    localStorage.setItem('logged', 'true');
+    this.setState({ auth: true });
   }
 
   componentDidMount = _ => {
@@ -28,7 +41,7 @@ export default class Routes extends Component {
     return (
       <BrowserRouter>
         {
-          this.state.auth ? <Header /> : <HeaderPL />
+          this.state.auth ? <Header logout={this.logoutUser} /> : <HeaderPL />
         }
         {
           this.state.auth
@@ -47,7 +60,7 @@ export default class Routes extends Component {
             :
             <Switch>
               <Route path='/login'>
-                <Login />
+                <Login login={this.loginUser} />
               </Route>
               <Route path='/cadastro/maid'>
                 <MaidSup />
