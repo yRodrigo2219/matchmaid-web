@@ -34,6 +34,9 @@ export default class Routes extends Component {
           this.state.auth
             ?
             <Switch>
+              <Route path='/alterar-perfil'>
+                "Alterar perfil aqui"
+              </Route>
               <Route path='/perfil'>
                 <Perfil />
               </Route>
