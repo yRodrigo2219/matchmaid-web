@@ -51,7 +51,7 @@
 }
 
 .content.perfil-visi .p2 .whiteThing.contatos {
-  min-height: 20%;
+  max-height: 12em;
   justify-content: flex-start;
 }
 
