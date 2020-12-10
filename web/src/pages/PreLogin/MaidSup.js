@@ -7,6 +7,8 @@ import DropDownCheck from '../../components/DropDownCheck';
 import CheckItem from '../../components/CheckItem';
 import Slider from '../../components/Slider';
 
+import { isValid } from '../../Constants';
+
 import './SignupSteps.css';
 
 export default class MaidSup extends Component {
@@ -69,7 +71,28 @@ export default class MaidSup extends Component {
     });
   }
 
+  badInputs = () => {
+    let message = '';
+
+    let keys = ['cpf', 'email', 'password', 'name', 'cep', 'uf', 'street', 'city', 'houseNumber', 'neighborhood'];
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+
+      if (!isValid[key].regex.test(this.state[key]))
+        return [true, isValid[key].message];
+    }
+
+    return [false, message];
+  }
+
   makeAccount() {
+    let [isBad, message] = this.badInputs();
+    if (isBad) {
+      alert(message)
+      return;
+    }
+
     // estrutura json para envio
     let user = {
       cpf: this.state.cpf,
@@ -93,7 +116,7 @@ export default class MaidSup extends Component {
         neighborhood: this.state.neighborhood,
         city: this.state.city,
         cep: this.state.cep,
-        uf: this.state.uf
+        uf: this.state.uf.toUpperCase()
       },
       disponibleDays: {
         maidCpf: this.state.cpf,
@@ -193,7 +216,7 @@ export default class MaidSup extends Component {
                 </div>
                 <div className='avanco'>
                   <NavButton to='/cadastro/maid/2' name='<' />
-                  <NavButton to='/cadastro/maid/3' name='Finalizar' onClick={this.makeAccount} />
+                  <NavButton to='/cadastro/maid/1' name='Finalizar' onClick={this.makeAccount} />
                 </div>
               </Route>
               <Route path='/cadastro/maid/2'>
@@ -205,15 +228,15 @@ export default class MaidSup extends Component {
                     <NavButton to='/cadastro/maid/3' name='3' />
                     <div></div>
                   </div>
-                  <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
-                  <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
+                  <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} maxLength={150} regex={isValid.street.regex} tooltip={isValid.street.tip} />
+                  <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
                   <div className='half'>
-                    <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} />
-                    <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} />
+                    <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} maxLength={5} regex={isValid.houseNumber.regex} tooltip={isValid.houseNumber.tip} />
+                    <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} maxLength={2} regex={isValid.uf.regex} tooltip={isValid.uf.tip} />
                   </div>
                   <div className='half'>
-                    <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} />
-                    <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} />
+                    <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} maxLength={50} regex={isValid.city.regex} tooltip={isValid.city.tip} />
+                    <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} maxLength={9} regex={isValid.cep.regex} tooltip={isValid.cep.tip} />
                   </div>
                 </div>
                 <div className='avanco'>
@@ -230,12 +253,12 @@ export default class MaidSup extends Component {
                     <NavButton to='/cadastro/maid/3' name='3' />
                     <div></div>
                   </div>
-                  <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
-                  <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />
-                  <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} />
+                  <Input name='Email' type='text' onChange={this.handleInputChange} id='email' value={this.state.email} maxLength={50} regex={isValid.email.regex} tooltip={isValid.email.tip} />
+                  <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} maxLength={50} regex={isValid.name.regex} tooltip={isValid.name.tip} />
+                  <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} regex={isValid.password.regex} tooltip={isValid.password.tip} />
                   <div className='half'>
-                    <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} />
-                    <Input name='CPF' type='text' onChange={this.handleInputChange} id='cpf' value={this.state.cpf} />
+                    <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} />
+                    <Input name='CPF' type='text' onChange={this.handleInputChange} id='cpf' value={this.state.cpf} maxLength={14} regex={isValid.cpf.regex} tooltip={isValid.cpf.tip} />
                   </div>
                 </div>
                 <div className='avanco'>

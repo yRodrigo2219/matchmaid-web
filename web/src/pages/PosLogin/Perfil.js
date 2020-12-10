@@ -7,6 +7,8 @@ import DropDownCheck from '../../components/DropDownCheck';
 import CheckItem from '../../components/CheckItem';
 import ColorTag from '../../components/ColorTag';
 
+import { isValid } from '../../Constants';
+
 import './Perfil.css';
 import { Route, Switch } from "react-router-dom";
 
@@ -18,6 +20,7 @@ export default class Perfil extends Component {
       // controle
       perfil: null,
       owner: false,
+      imageFile: null,
       cpf: '',
       id: 1,
       // user
@@ -26,6 +29,7 @@ export default class Perfil extends Component {
       phoneNumber: '',
       bibliography: '',
       pricePerHour: 0,
+      image: '',
       // location
       longitude: 0,
       latitude: 0,
@@ -63,7 +67,23 @@ export default class Perfil extends Component {
     this.updateMaid = this.updateMaid.bind(this);
     this.updateDeS = this.updateDeS.bind(this);
     this.handleInputCheck = this.handleInputCheck.bind(this);
+    this.handleInputImage = this.handleInputImage.bind(this);
+  }
 
+  verifyBase64() {
+    let regex = /^(?:[A-Z0-9+/]{4})*(?:[A-Z0-9+/]{2}==|[A-Z0-9+/]{3}=|[A-Z0-9+/]{4})$/i;
+
+    console.log(regex.test(this.state.image));
+    regex.lastIndex = 0; // reseta a regex
+  }
+
+  getBase64(file) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
   }
 
   updateLocal() {
@@ -90,7 +110,7 @@ export default class Perfil extends Component {
       .then(res => alert(JSON.stringify(res)))
   }
 
-  updateMaid() {
+  updateMaid = async () => {
     let maid = {
       cpf: this.state.cpf,
       name: this.state.name,
@@ -101,7 +121,7 @@ export default class Perfil extends Component {
       bibliography: this.state.bibliography,
       pricePerHour: this.state.pricePerHour,
       numberOfVisits: 0,
-      image: "image"
+      image: await this.getBase64(this.state.imageFile)
     };
 
     fetch(`http://localhost:3333/update/maid/${this.state.id}`, {
@@ -189,6 +209,18 @@ export default class Perfil extends Component {
     });
   }
 
+  handleInputImage(e) {
+    if (!e.target.files[0].type.includes('image/png') && !e.target.files[0].type.includes('image/jpeg') && !e.target.files[0].type.includes('image/jpg')) {
+      e.target.value = '';
+      alert("Tipo inválido");
+    } else if (e.target.files[0].size > 2150000) {
+      e.target.value = '';
+      alert("Arquivo excede o tamanho maximo(2MB)")
+    } else {
+      this.setState({ imageFile: e.target.files[0] })
+    }
+  }
+
   handleInputCheck(e) {
     this.setState({
       [e.target.name]: e.target.checked
@@ -197,9 +229,6 @@ export default class Perfil extends Component {
 
   componentDidMount() {
     this.setState({ perfil: JSON.parse(localStorage.getItem('perfil')), owner: ('true' === localStorage.getItem('owner')) });
-
-    // gambiarra pra ver se trocou de perfil visitante para perfil proprietario...
-    // setInterval(() => this.setState({ perfil: JSON.parse(localStorage.getItem('perfil')), owner: ('true' === localStorage.getItem('owner')) }), 1000);
   }
 
   renderServices() {
@@ -248,15 +277,15 @@ export default class Perfil extends Component {
                     <WhiteThing className='alterar-endereco'>
                       <h2>Alterar Endereço</h2>
                       <div className='cca'>
-                        <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
-                        <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
+                        <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} maxLength={150} regex={isValid.street.regex} tooltip={isValid.street.tip} />
+                        <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
                         <div className='half'>
-                          <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} />
-                          <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} />
+                          <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} maxLength={5} regex={isValid.houseNumber.regex} tooltip={isValid.houseNumber.tip} />
+                          <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} maxLength={2} regex={isValid.uf.regex} tooltip={isValid.uf.tip} />
                         </div>
                         <div className='half'>
-                          <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} />
-                          <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} />
+                          <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} maxLength={50} regex={isValid.city.regex} tooltip={isValid.city.tip} />
+                          <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} maxLength={9} regex={isValid.cep.regex} tooltip={isValid.cep.tip} />
                         </div>
                         <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateLocal} />
                       </div>
@@ -264,12 +293,12 @@ export default class Perfil extends Component {
                     <WhiteThing className='alterar-usuario'>
                       <h2>Alterar Usuário</h2>
                       <div className='cca'>
-                        <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
-                        <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />
-                        <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} />
+                        <Input name='Email' type='text' onChange={this.handleInputChange} id='email' value={this.state.email} maxLength={50} regex={isValid.email.regex} tooltip={isValid.email.tip} />
+                        <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} maxLength={50} regex={isValid.name.regex} tooltip={isValid.name.tip} />
+                        <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} regex={isValid.password.regex} tooltip={isValid.password.tip} />
                         <div className='half'>
-                          <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} />
-                          <span></span>
+                          <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} />
+                          <Input name='Imagem' type='file' id='imagem' onChange={this.handleInputImage} accept="image/*" />
                         </div>
                         <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateMaid} />
                       </div>

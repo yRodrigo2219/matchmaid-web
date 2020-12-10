@@ -49,11 +49,33 @@
 }
 
 .input-label {
+  position: relative;
   display: flex;
   flex-direction: column;
   user-select: none;
   margin-top: 30px;
   color: darkgray;
+}
+
+.input-label .tooltiptext {
+  visibility: hidden;
+  padding: 0.5em;
+  width: fit-content;
+  background-color: #306ab6d0;
+  color: #fff;
+  text-align: left;
+  border-radius: 0.7em;
+  line-height: 1.5em;
+
+  /* Position the tooltip */
+  position: absolute;
+  top: 4em;
+  left: 0.5em;
+  z-index: 1;
+}
+
+.input-label:hover .tooltiptext {
+  visibility: visible;
 }
 
 .input-space {
@@ -62,6 +84,15 @@
   border-radius: 40px;
   font-size: 1.4em;
   padding-left: 15px;
+}
+
+.input-space.errado {
+  border: 1px solid #e3304e;
+}
+
+.input-space[type=file] {
+  border: 0px;
+  padding-top: 0.3em;
 }
 
 .dropdown-check-list {
