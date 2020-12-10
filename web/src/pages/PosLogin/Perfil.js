@@ -15,8 +15,11 @@ export default class Perfil extends Component {
     super(props);
 
     this.state = {
+      // controle
       perfil: null,
       owner: false,
+      cpf: '',
+      id: 1,
       // user
       name: '',
       email: '',
@@ -56,11 +59,139 @@ export default class Perfil extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.updateLocal = this.updateLocal.bind(this);
+    this.updateMaid = this.updateMaid.bind(this);
+    this.updateDeS = this.updateDeS.bind(this);
+    this.handleInputCheck = this.handleInputCheck.bind(this);
+
+  }
+
+  updateLocal() {
+    let local = {
+      longitude: this.state.longitude,
+      latitude: this.state.latitude,
+      street: this.state.street,
+      houseNumber: this.state.houseNumber,
+      complement: this.state.complement,
+      neighborhood: this.state.neighborhood,
+      city: this.state.city,
+      cep: this.state.cep,
+      uf: this.state.uf
+    };
+
+    fetch(`http://localhost:3333/update/maid/location/${this.state.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(local),
+    })
+      .then(res => res.json())
+      .then(res => alert(JSON.stringify(res)))
+  }
+
+  updateMaid() {
+    let maid = {
+      cpf: this.state.cpf,
+      name: this.state.name,
+      email: this.state.email,
+      phoneNumber: this.state.phoneNumber,
+      birthDate: "1999-06-26T03:00:00.000Z",
+      status: false,
+      bibliography: this.state.bibliography,
+      pricePerHour: this.state.pricePerHour,
+      numberOfVisits: 0,
+      image: "image"
+    };
+
+    fetch(`http://localhost:3333/update/maid/${this.state.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(maid),
+    })
+      .then(res => res.json())
+      .then(res => alert(JSON.stringify(res)))
+  }
+
+  updateDeS() {
+    let dias = {
+      monday: this.state.monday,
+      tuesday: this.state.tuesday,
+      wednesday: this.state.wednesday,
+      thursday: this.state.thursday,
+      friday: this.state.friday,
+      saturday: this.state.saturday,
+      sunday: this.state.sunday
+    };
+
+    let hora = {
+      morning: this.state.morning,
+      afternoon: this.state.afternoon,
+      night: this.state.night
+    };
+
+    let serv = {
+      nanny: this.state.nanny,
+      careHouse: this.state.careHouse,
+      cleanHouse: this.state.cleanHouse,
+      ironClothes: this.state.ironClothes,
+      washClothes: this.state.washClothes,
+      washDishes: this.state.washDishes,
+      cook: this.state.cook
+    };
+
+    fetch(`http://localhost:3333/update/maid/disponibleDays/${this.state.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dias),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          alert(res.message);
+        } else {
+          fetch(`http://localhost:3333/update/maid/disponiblePeriod/${this.state.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(hora),
+          })
+            .then(res => res.json())
+            .then(res => {
+              if (res.error) {
+                alert(res.message);
+              } else {
+                fetch(`http://localhost:3333/update/maid/services/${this.state.id}`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(serv),
+                })
+                  .then(res => res.json())
+                  .then(res => {
+                    alert(JSON.stringify(res.message))
+                  })
+              }
+            })
+        }
+      })
   }
 
   handleInputChange(e) {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  handleInputCheck(e) {
+    this.setState({
+      [e.target.name]: e.target.checked
     });
   }
 
@@ -114,46 +245,65 @@ export default class Perfil extends Component {
               <Switch>
                 <Route path='/perfil/cfg'>
                   <div className='p2 h'>
-                    <WhiteThing className='endereco'>
+                    <WhiteThing className='alterar-endereco'>
                       <h2>Alterar Endereço</h2>
-                      <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
-                      <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
-                      <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} />
-                      <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} />
-                      <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} />
-                      <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} />
-                      <Button name='Confirmar Alterações' to='/perfil/cfg' />
+                      <div className='cca'>
+                        <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
+                        <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
+                        <div className='half'>
+                          <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} />
+                          <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} />
+                        </div>
+                        <div className='half'>
+                          <Input name='Cidade' type='text' onChange={this.handleInputChange} id='city' value={this.state.city} />
+                          <Input name='CEP' type='text' onChange={this.handleInputChange} id='cep' value={this.state.cep} />
+                        </div>
+                        <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateLocal} />
+                      </div>
                     </WhiteThing>
-                    <WhiteThing className='usuario'>
+                    <WhiteThing className='alterar-usuario'>
                       <h2>Alterar Usuário</h2>
-                      <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
-                      <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />
-                      <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} />
-                      <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} />
-                      <Button name='Confirmar Alterações' to='/perfil/cfg' />
+                      <div className='cca'>
+                        <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
+                        <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />
+                        <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} />
+                        <div className='half'>
+                          <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} />
+                          <span></span>
+                        </div>
+                        <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateMaid} />
+                      </div>
                     </WhiteThing>
-                    <WhiteThing className='servicos'>
+                    <WhiteThing className='alterar-servicos'>
                       <h2>Alterar Dias e Serviços</h2>
-                      <DropDownCheck id='alterar-dias' label='Dias disponíveis'>
-                        <CheckItem label='Segunda' />
-                        <CheckItem label='Terça' />
-                        <CheckItem label='Quarta' />
-                        <CheckItem label='Quinta' />
-                        <CheckItem label='Sexta' />
-                        <CheckItem label='Sabado' />
-                        <CheckItem label='Domingo' />
-                      </DropDownCheck>
-                      <DropDownCheck id='alterar-periodo' label='Períodos disponíveis'>
-                        <CheckItem label='Dia' />
-                        <CheckItem label='Tarde' />
-                        <CheckItem label='Noite' />
-                      </DropDownCheck>
-                      <DropDownCheck id='alterar-servico' label='Serviços prestados'>
-                        <CheckItem label='Babá' />
-                        <CheckItem label='Limpar Casa' />
-                        <CheckItem label='Cozinhar' />
-                      </DropDownCheck>
-                      <Button name='Confirmar Alterações' to='/perfil/cfg' />
+                      <div className='cca t'>
+                        <div>
+                          <DropDownCheck id='alterar-dias' label='Dias disponíveis'>
+                            <CheckItem label='Segunda' id='monday' checked={this.state.monday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Terça' id='tuesday' checked={this.state.tuesday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Quarta' id='wednesday' checked={this.state.wednesday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Quinta' id='thursday' checked={this.state.thursday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Sexta' id='friday' checked={this.state.friday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Sabado' id='saturday' checked={this.state.saturday} onClick={this.handleInputCheck} />
+                            <CheckItem label='Domingo' id='sunday' checked={this.state.sunday} onClick={this.handleInputCheck} />
+                          </DropDownCheck>
+                          <DropDownCheck id='alterar-periodo' label='Períodos disponíveis'>
+                            <CheckItem label='Manhã' id='morning' checked={this.state.morning} onClick={this.handleInputCheck} />
+                            <CheckItem label='Tarde' id='afternoon' checked={this.state.afternoon} onClick={this.handleInputCheck} />
+                            <CheckItem label='Noite' id='night' checked={this.state.night} onClick={this.handleInputCheck} />
+                          </DropDownCheck>
+                          <DropDownCheck id='alterar-servico' label='Serviços prestados'>
+                            <CheckItem label='Babá' id='nanny' checked={this.state.nanny} onClick={this.handleInputCheck} />
+                            <CheckItem label='Cuidar Casa' id='careHouse' checked={this.state.careHouse} onClick={this.handleInputCheck} />
+                            <CheckItem label='Limpar Casa' id='cleanHouse' checked={this.state.cleanHouse} onClick={this.handleInputCheck} />
+                            <CheckItem label='Passar Roupas' id='ironClothes' checked={this.state.ironClothes} onClick={this.handleInputCheck} />
+                            <CheckItem label='Lavar Roupas' id='washClothes' checked={this.state.washClothes} onClick={this.handleInputCheck} />
+                            <CheckItem label='Lavar Louça' id='washDishes' checked={this.state.washDishes} onClick={this.handleInputCheck} />
+                            <CheckItem label='Cozinhar' id='cook' checked={this.state.cook} onClick={this.handleInputCheck} />
+                          </DropDownCheck>
+                        </div>
+                        <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateDeS} />
+                      </div>
                     </WhiteThing>
                   </div>
                 </Route>
@@ -181,6 +331,7 @@ export default class Perfil extends Component {
                 <div className='local'>
                   <h2>Localização</h2>
                   <span>{`${this.state.perfil.locations.city}, ${this.state.perfil.locations.uf}`}</span>
+                  <span>{this.state.perfil.locations.cep}</span>
                 </div>
                 {this.renderServices()}
               </div>

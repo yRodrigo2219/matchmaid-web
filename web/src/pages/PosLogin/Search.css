@@ -1,20 +1,24 @@
 .content.search {
+  margin-top: 0px;
   display: flex;
-  height: 90vh;
-  flex-direction: row;
+  min-height: 100vh;
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 400;
 }
 
 .content.search .filter {
-  flex: 3;
+  position: absolute;
+  top: 7em;
+  left: 1em;
+  z-index: 1;
   max-width: 400px;
-  background-color: darkgray;
   display: flex;
   justify-content: center;
 }
 
 .content.search .map {
-  position: relative ;
-  flex: 7;
+  position: relative;
+  width: 100%;
 }
 
 .content.search .filter .whiteThing {
@@ -22,12 +26,16 @@
   flex-direction: column;
   justify-content: flex-start;
   font-size: 2em;
-  height: 85%;
-  width: 90%;
+  height: 20.8em;
+  width: 10.5em;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0px 10px 15px #00000017;
 }
 
 .content.search .filter .whiteThing>span {
   text-align: center;
+  font-weight: 500;
+  font-size: 1em;
 }
 
 .content.search .filter .category {
@@ -35,16 +43,18 @@
   margin-top: 25px;
 }
 
-.content.search .filter .category>label{
+.content.search .filter .category>label {
   user-select: none;
+  display: block;
   cursor: pointer;
-  padding: 5px;
+  padding: 3px;
+  font-size: 1.5em;
 }
 
-.content.search .filter .category>label>input{
+.content.search .filter .category>label>input {
   margin-right: 10px;
 }
 
-.content.search .map .tooltip{
+.content.search .map .tooltip {
   text-align: center;
 }

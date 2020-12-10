@@ -11,7 +11,7 @@ export default function Login(props) {
     <div className='content login'>
       <WhiteThing className='shadow'>
         <div className='cadastro'>
-          <Button to='/cadastro' name='Cadastrar' />
+          <Button to='/cadastro' name='Fazer Cadastro' />
         </div>
         <div className='inputs'>
           <Input name='Email' type='text' />

@@ -2,6 +2,8 @@ import React from 'react';
 import NavButton from '../../components/NavButton';
 import { useHistory } from "react-router-dom";
 
+import logo from '../../Images/socorro/logo.png';
+
 import './Header.css';
 
 export default function Header(props) {
@@ -18,7 +20,7 @@ export default function Header(props) {
     <div className='header'>
       <div className='h-home'>
         <div></div>
-        <NavButton to='/' name='Inicio' />
+        <NavButton to='/' name={<img src={logo} />} />
       </div>
       <div className='h-seja'>
 

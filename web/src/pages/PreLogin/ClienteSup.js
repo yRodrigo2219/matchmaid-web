@@ -87,8 +87,10 @@ export default class ClienteSup extends Component {
               <Route path='/cadastro/cliente/2'>
                 <div>
                   <div className='progression'>
-                    <div>1</div>
-                    <div>2</div>
+                    <div></div>
+                    <NavButton to='/cadastro/cliente/1' name='1' />
+                    <NavButton to='/cadastro/cliente/2' name='2' className='active' />
+                    <div></div>
                   </div>
                   <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
                   <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
@@ -109,8 +111,10 @@ export default class ClienteSup extends Component {
               <Route path='/cadastro/cliente'>
                 <div>
                   <div className='progression'>
-                    <div>1</div>
-                    <div>2</div>
+                    <div></div>
+                    <NavButton to='/cadastro/cliente/1' name='1' className='active' />
+                    <NavButton to='/cadastro/cliente/2' name='2' />
+                    <div></div>
                   </div>
                   <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
                   <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />
@@ -128,7 +132,7 @@ export default class ClienteSup extends Component {
             </Switch>
           </BrowserRouter>
         </WhiteThing>
-      </div>
+      </div >
     );
   }
 }

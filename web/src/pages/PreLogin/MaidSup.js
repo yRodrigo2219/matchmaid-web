@@ -13,6 +13,7 @@ export default class MaidSup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // maid
       cpf: '',
       name: '',
       email: '',
@@ -20,6 +21,7 @@ export default class MaidSup extends Component {
       phoneNumber: '',
       status: false,
       pricePerHour: 20,
+      // local
       latitude: 0.0,
       longitude: 0.0,
       street: '',
@@ -28,6 +30,7 @@ export default class MaidSup extends Component {
       city: '',
       cep: '',
       uf: '',
+      // dias
       monday: false,
       tuesday: false,
       wednesday: false,
@@ -35,9 +38,11 @@ export default class MaidSup extends Component {
       friday: false,
       saturday: false,
       sunday: false,
+      // periodo
       morning: false,
       afternoon: false,
       night: false,
+      // servico
       nanny: false,
       careHouse: false,
       cleanHouse: false,
@@ -49,11 +54,18 @@ export default class MaidSup extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.makeAccount = this.makeAccount.bind(this);
+    this.handleInputCheck = this.handleInputCheck.bind(this);
   }
 
   handleInputChange(e) {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  handleInputCheck(e) {
+    this.setState({
+      [e.target.name]: e.target.checked
     });
   }
 
@@ -139,29 +151,35 @@ export default class MaidSup extends Component {
               <Route path='/cadastro/maid/3'>
                 <div>
                   <div className='progression'>
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
+                    <div></div>
+                    <NavButton to='/cadastro/maid/1' name='1' />
+                    <NavButton to='/cadastro/maid/2' name='2' />
+                    <NavButton to='/cadastro/maid/3' name='3' className='active' />
+                    <div></div>
                   </div>
                   <div className='dropdowns'>
                     <DropDownCheck id='cadastro-dias' label='Dias disponíveis'>
-                      <CheckItem label='Segunda' />
-                      <CheckItem label='Terça' />
-                      <CheckItem label='Quarta' />
-                      <CheckItem label='Quinta' />
-                      <CheckItem label='Sexta' />
-                      <CheckItem label='Sabado' />
-                      <CheckItem label='Domingo' />
+                      <CheckItem label='Segunda' id='monday' checked={this.state.monday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Terça' id='tuesday' checked={this.state.tuesday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Quarta' id='wednesday' checked={this.state.wednesday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Quinta' id='thursday' checked={this.state.thursday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Sexta' id='friday' checked={this.state.friday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Sabado' id='saturday' checked={this.state.saturday} onClick={this.handleInputCheck} />
+                      <CheckItem label='Domingo' id='sunday' checked={this.state.sunday} onClick={this.handleInputCheck} />
                     </DropDownCheck>
                     <DropDownCheck id='cadastro-periodo' label='Períodos disponíveis'>
-                      <CheckItem label='Dia' />
-                      <CheckItem label='Tarde' />
-                      <CheckItem label='Noite' />
+                      <CheckItem label='Manhã' id='morning' checked={this.state.morning} onClick={this.handleInputCheck} />
+                      <CheckItem label='Tarde' id='afternoon' checked={this.state.afternoon} onClick={this.handleInputCheck} />
+                      <CheckItem label='Noite' id='night' checked={this.state.night} onClick={this.handleInputCheck} />
                     </DropDownCheck>
                     <DropDownCheck id='cadastro-servico' label='Serviços prestados'>
-                      <CheckItem label='Babá' />
-                      <CheckItem label='Limpar Casa' />
-                      <CheckItem label='Cozinhar' />
+                      <CheckItem label='Babá' id='nanny' checked={this.state.nanny} onClick={this.handleInputCheck} />
+                      <CheckItem label='Cuidar Casa' id='careHouse' checked={this.state.careHouse} onClick={this.handleInputCheck} />
+                      <CheckItem label='Limpar Casa' id='cleanHouse' checked={this.state.cleanHouse} onClick={this.handleInputCheck} />
+                      <CheckItem label='Passar Roupas' id='ironClothes' checked={this.state.ironClothes} onClick={this.handleInputCheck} />
+                      <CheckItem label='Lavar Roupas' id='washClothes' checked={this.state.washClothes} onClick={this.handleInputCheck} />
+                      <CheckItem label='Lavar Louça' id='washDishes' checked={this.state.washDishes} onClick={this.handleInputCheck} />
+                      <CheckItem label='Cozinhar' id='cook' checked={this.state.cook} onClick={this.handleInputCheck} />
                     </DropDownCheck>
                   </div>
                   <div className='cadastro-preco'>
@@ -181,9 +199,11 @@ export default class MaidSup extends Component {
               <Route path='/cadastro/maid/2'>
                 <div>
                   <div className='progression'>
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
+                    <div></div>
+                    <NavButton to='/cadastro/maid/1' name='1' />
+                    <NavButton to='/cadastro/maid/2' name='2' className='active' />
+                    <NavButton to='/cadastro/maid/3' name='3' />
+                    <div></div>
                   </div>
                   <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} />
                   <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} />
@@ -204,9 +224,11 @@ export default class MaidSup extends Component {
               <Route path='/cadastro/maid'>
                 <div>
                   <div className='progression'>
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
+                    <div></div>
+                    <NavButton to='/cadastro/maid/1' name='1' className='active' />
+                    <NavButton to='/cadastro/maid/2' name='2' />
+                    <NavButton to='/cadastro/maid/3' name='3' />
+                    <div></div>
                   </div>
                   <Input name='Email' type='email' onChange={this.handleInputChange} id='email' value={this.state.email} />
                   <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} />

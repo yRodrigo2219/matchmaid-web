@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Mitr&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@200;400;500&display=swap');
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+  user-select: none;
+  font-size: 16px;
 }
-
 
 *:focus {
   outline: none;
@@ -15,9 +17,15 @@
 
 #root {
   min-height: 100vh;
+  min-width: 100vw;
   display: flex;
   flex-direction: column;
   background-color: #F1F6F9;
+  overflow: auto;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .content {

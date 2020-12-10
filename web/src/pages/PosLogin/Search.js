@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import WhiteThing from '../../components/WhiteThing';
 import { StaticMap } from 'react-map-gl';
-import { IconLayer } from '@deck.gl/layers'
+import { IconLayer } from '@deck.gl/layers';
 import { DataFilterExtension } from '@deck.gl/extensions';
 import DeckGL from '@deck.gl/react';
 import { MapView } from '@deck.gl/core';
@@ -15,9 +15,30 @@ export default class Search extends Component {
     super(props);
 
     this.state = {
+      // gambiarra
       rota: '',
-      baba: false,
-      ranger: [[0, 1000], [0, 0]],
+      // filter servico
+      nanny: false,
+      careHouse: false,
+      cleanHouse: false,
+      ironClothes: false,
+      washClothes: false,
+      washDishes: false,
+      cook: false,
+      // filter dia
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+      saturday: false,
+      sunday: false,
+      // filter periodo
+      morning: false,
+      afternoon: false,
+      night: false,
+      // map
+      ranger: [[0, 10000], [0, 0]],
       data: [],
     };
   }
@@ -63,19 +84,32 @@ export default class Search extends Component {
               <div className='category'>
                 <span>Serviços</span>
                 <hr />
-                <label>
-                  <input type='checkbox' checked={this.state.baba} name='baba' onChange={this.handleChangeBox} />
-                  Babá
-                </label>
+                <label><input type='checkbox' checked={this.state.nanny} name='nanny' onChange={this.handleChangeBox} />Babá</label>
+                <label><input type='checkbox' checked={this.state.careHouse} name='careHouse' onChange={this.handleChangeBox} />Cuidar Casa</label>
+                <label><input type='checkbox' checked={this.state.cleanHouse} name='cleanHouse' onChange={this.handleChangeBox} />Limpar Casa</label>
+                <label><input type='checkbox' checked={this.state.ironClothes} name='ironClothes' onChange={this.handleChangeBox} />Passar Roupas</label>
+                <label><input type='checkbox' checked={this.state.washClothes} name='washClothes' onChange={this.handleChangeBox} />Lavar Roupas</label>
+                <label><input type='checkbox' checked={this.state.washDishes} name='washDishes' onChange={this.handleChangeBox} />Lavar Louça</label>
+                <label><input type='checkbox' checked={this.state.cook} name='cook' onChange={this.handleChangeBox} />Cozinhar</label>
               </div>
 
               <div className='category'>
                 <span>Dias Disponíveis</span>
                 <hr />
-                <label>
-                  <input type='checkbox' />
-                  Segunda
-                </label>
+                <label><input type='checkbox' checked={this.state.monday} name='monday' onChange={this.handleChangeBox} />Segunda</label>
+                <label><input type='checkbox' checked={this.state.tuesday} name='tuesday' onChange={this.handleChangeBox} />Terça</label>
+                <label><input type='checkbox' checked={this.state.wednesday} name='wednesday' onChange={this.handleChangeBox} />Quarta</label>
+                <label><input type='checkbox' checked={this.state.thursday} name='thursday' onChange={this.handleChangeBox} />Quinta</label>
+                <label><input type='checkbox' checked={this.state.friday} name='friday' onChange={this.handleChangeBox} />Sexta</label>
+                <label><input type='checkbox' checked={this.state.saturday} name='saturday' onChange={this.handleChangeBox} />Sabado</label>
+                <label><input type='checkbox' checked={this.state.sunday} name='sunday' onChange={this.handleChangeBox} />Domingo</label>
+              </div>
+              <div className='category'>
+                <span>Periodos Disponíveis</span>
+                <hr />
+                <label><input type='checkbox' checked={this.state.morning} name='morning' onChange={this.handleChangeBox} />Manhã</label>
+                <label><input type='checkbox' checked={this.state.afternoon} name='afternoon' onChange={this.handleChangeBox} />Tarde</label>
+                <label><input type='checkbox' checked={this.state.night} name='night' onChange={this.handleChangeBox} />Noite</label>
               </div>
             </div>
           </WhiteThing>
@@ -99,7 +133,27 @@ export default class Search extends Component {
                 // Filtro
                 getFilterValue: f => {
                   let n = 0;
-                  n += ((this.state.baba && !f.services.nanny) ? 1 : 0);
+                  // servicos
+                  n += ((this.state.nanny && !f.services.nanny) ? 1 : 0);
+                  n += ((this.state.careHouse && !f.services.careHouse) ? 1 : 0);
+                  n += ((this.state.cleanHouse && !f.services.cleanHouse) ? 1 : 0);
+                  n += ((this.state.ironClothes && !f.services.ironClothes) ? 1 : 0);
+                  n += ((this.state.washClothes && !f.services.washClothes) ? 1 : 0);
+                  n += ((this.state.washDishes && !f.services.washDishes) ? 1 : 0);
+                  n += ((this.state.cook && !f.services.cook) ? 1 : 0);
+                  // dias
+                  n += ((this.state.monday && !f.disponibleDays.monday) ? 1 : 0);
+                  n += ((this.state.tuesday && !f.disponibleDays.tuesday) ? 1 : 0);
+                  n += ((this.state.wednesday && !f.disponibleDays.wednesday) ? 1 : 0);
+                  n += ((this.state.thursday && !f.disponibleDays.thursday) ? 1 : 0);
+                  n += ((this.state.friday && !f.disponibleDays.friday) ? 1 : 0);
+                  n += ((this.state.saturday && !f.disponibleDays.saturday) ? 1 : 0);
+                  n += ((this.state.sunday && !f.disponibleDays.sunday) ? 1 : 0);
+                  // periodo
+                  n += ((this.state.morning && !f.disponiblePeriods.morning) ? 1 : 0);
+                  n += ((this.state.afternoon && !f.disponiblePeriods.afternoon) ? 1 : 0);
+                  n += ((this.state.night && !f.disponiblePeriods.night) ? 1 : 0);
+
                   return [f.preco, n];
                 },
                 filterRange: this.state.ranger,

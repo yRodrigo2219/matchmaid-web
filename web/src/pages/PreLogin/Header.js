@@ -1,6 +1,8 @@
 import React from 'react';
 import NavButton from '../../components/NavButton';
 
+import logo from '../../Images/socorro/logo.png';
+
 import './Header.css';
 
 export default function Header() {
@@ -8,7 +10,7 @@ export default function Header() {
     <div className='header'>
       <div className='h-home'>
         <div></div>
-        <NavButton to='/' name='Inicio' />
+        <NavButton to='/' name={<img src={logo} />} />
       </div>
       <div className='h-seja'>
         <NavButton to='/cadastro/maid' name='Seja uma Maid!' />
