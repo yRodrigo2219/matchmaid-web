@@ -2,9 +2,9 @@ import React from 'react';
 import Button from '../../components/Button';
 import WhiteThing from '../../components/WhiteThing';
 
-import banner from '../../Images/socorro/banner.png';
-import prop0 from '../../Images/socorro/bunette0.jpg';
-import prop1 from '../../Images/socorro/bunette1.jpg';
+import banner from '../../Images/imgs/banner.png';
+import prop0 from '../../Images/imgs/bunette0.jpg';
+import prop1 from '../../Images/imgs/bunette1.jpg';
 
 import './Home.css';
 
@@ -13,7 +13,7 @@ export default function Home() {
     <div className='content homepl'>
       <div className='banner'>
         <span>Encontre a melhor e mais perto de você, para te ajudar nos serviços do lar.</span>
-        <img src={banner} />
+        <img src={banner} alt='banner' />
       </div>
       <div className='cadastro'>
         <WhiteThing>
@@ -28,7 +28,7 @@ export default function Home() {
       <div className='propaganda'>
         <div>
           <div></div>
-          <img src={prop0} />
+          <img src={prop0} alt='maid0' />
           <div className='descricao'>
             <span>Confie:</span>
             <span>As mais bem avaliadas, sao as de mais confiança, para que sejam bem avaliadas desde o inicio é necessário um curriculo ou portifólio para ser analisado.</span>
@@ -41,7 +41,7 @@ export default function Home() {
             <span>Dica:</span>
             <span>Acompanhe o trabalho para saber avaliar sua colaboradora.</span>
           </div>
-          <img src={prop1} />
+          <img src={prop1} alt='maid1' />
           <div></div>
         </div>
       </div>

@@ -22,7 +22,7 @@ export default function Input(props) {
         }
       }
     }
-  })
+  }, [uuid, props.regex]);
 
   return (
     <label className='input-label' id={uuid}>

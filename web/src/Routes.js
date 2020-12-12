@@ -16,7 +16,8 @@ export default class Routes extends Component {
     super(props);
 
     this.state = {
-      auth: ('true' === localStorage.getItem('logged')),
+      auth: (localStorage.getItem('accessToken') !== null),
+      isMaid: (localStorage.getItem('isMaid') === 'true'),
     };
 
     this.logoutUser = this.logoutUser.bind(this);
@@ -24,24 +25,29 @@ export default class Routes extends Component {
   }
 
   logoutUser() {
-    localStorage.setItem('logged', 'false');
+    fetch('http://localhost:3333/logout', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refreshToken: localStorage.getItem('refreshToken') })
+    })
+      .catch(res => console.error(res));
+
+    localStorage.clear('accessToken');
+    localStorage.clear('refreshToken');
     this.setState({ auth: false });
   }
 
   loginUser() {
-    localStorage.setItem('logged', 'true');
-    this.setState({ auth: true });
-  }
-
-  componentDidMount = _ => {
-    //setInterval(() => this.setState({ auth: !this.state.auth }), 2500);
+    this.setState({ auth: (localStorage.getItem('accessToken') !== null), isMaid: (localStorage.getItem('isMaid') === 'true') });
   }
 
   render() {
     return (
       <BrowserRouter>
         {
-          this.state.auth ? <Header logout={this.logoutUser} /> : <HeaderPL />
+          this.state.auth ? <Header logout={this.logoutUser} isMaid={this.state.isMaid} /> : <HeaderPL />
         }
         {
           this.state.auth
@@ -54,7 +60,7 @@ export default class Routes extends Component {
                 <Perfil />
               </Route>
               <Route path='/'>
-                <Search />
+                <Search logout={this.logoutUser} />
               </Route>
             </Switch>
             :

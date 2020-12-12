@@ -2,7 +2,7 @@ import React from 'react';
 import NavButton from '../../components/NavButton';
 import { useHistory } from "react-router-dom";
 
-import logo from '../../Images/socorro/logo.png';
+import logo from '../../Images/imgs/logo.png';
 
 import './Header.css';
 
@@ -20,13 +20,13 @@ export default function Header(props) {
     <div className='header'>
       <div className='h-home'>
         <div></div>
-        <NavButton to='/' name={<img src={logo} />} />
+        <NavButton to='/' name={<img src={logo} alt='Inicio' />} />
       </div>
       <div className='h-seja'>
 
       </div>
       <div className='h-extra'>
-        <NavButton to='/perfil' name='Perfil' onClick={handlePerfil} />
+        {props.isMaid ? <NavButton to='/perfil' name='Perfil' onClick={handlePerfil} /> : <div></div>}
         <NavButton to='/logout' name='Sair' onClick={props.logout} />
       </div>
     </div >

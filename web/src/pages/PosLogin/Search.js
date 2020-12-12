@@ -7,6 +7,9 @@ import DeckGL from '@deck.gl/react';
 import { MapView } from '@deck.gl/core';
 import { Redirect } from 'react-router-dom';
 
+import marker from '../../Images/imgs/marker.png';
+import { tryToken } from '../../Constants';
+
 import './Search.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -15,8 +18,9 @@ export default class Search extends Component {
     super(props);
 
     this.state = {
-      // gambiarra
+      // workaround
       rota: '',
+      maidId: -1,
       // filter servico
       nanny: false,
       careHouse: false,
@@ -49,10 +53,60 @@ export default class Search extends Component {
     this.setState({ data: this.state.data.concat() });
   }
 
-  componentDidMount() {
-    fetch('http://localhost:3333/get/maids')
-      .then(res => res.json())
-      .then(res => this.setState({ data: res }));
+  async createInteraction(maidId) {
+    while (await fetch('http://localhost:3333/create/interaction', {
+      method: 'post',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ clientId: 1, maidId: maidId, accessTime: new Date().toISOString().slice(0, 19) })
+    })
+      .then((res) => tryToken(res, 201))
+      .then(([err, json]) => {
+        if (!err) {
+          return false;
+        }
+        if (err && json) {
+          return true;
+        }
+        return false;
+      })
+      .catch(_ => {
+        this.props.logout();
+        return false;
+      })) { };
+  }
+
+  async componentDidMount() {
+    let isMaid = ('true' === localStorage.getItem('isMaid'));
+    if (isMaid) {
+      let user = JSON.parse(localStorage.getItem('userInfo'));
+      this.setState({
+        maidId: user.maid.id
+      });
+    }
+
+    // get maids
+    while (await fetch('http://localhost:3333/get/maids', {
+      method: 'get',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    })
+      .then((res) => tryToken(res, 200))
+      .then(([err, json]) => {
+        if (!err) {
+          this.setState({ data: json });
+        } else if (err && json) {
+          return true;
+        }
+        return false;
+      })
+      .catch(_ => {
+        this.props.logout();
+        return false;
+      })) { }
   }
 
   dataFilter = new DataFilterExtension({ filterSize: 2 });
@@ -62,17 +116,15 @@ export default class Search extends Component {
   MAP_STYLE = 'https://tiles.basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
 
   INITIAL_VIEW_STATE = {
-    longitude: -40.361861,
-    latitude: -14.524967,
-    zoom: 2,
+    longitude: (JSON.parse(localStorage.getItem('userInfo')).locations.longitude || 0),
+    latitude: (JSON.parse(localStorage.getItem('userInfo')).locations.latitude || 0),
+    zoom: 14,
     maxZoom: 20,
   };
 
   ICON_MAPPING = {
-    marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
+    marker: { x: 0, y: 0, width: 512, height: 786, mask: true }
   };
-
-  //layer = 
 
   render() {
     return (
@@ -121,14 +173,14 @@ export default class Search extends Component {
                 id: 'icon-layer',
                 data: this.state.data,
                 pickable: true,
-                iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+                iconAtlas: marker,
                 iconMapping: this.ICON_MAPPING,
-                sizeScale: 50,
+                sizeScale: 60,
                 getIcon: d => 'marker',
                 getPosition: d => {
-                  return [d.locations.latitude, d.locations.longitude];
+                  return [d.locations.longitude, d.locations.latitude];
                 },
-                getColor: d => [Math.sqrt(d.exits), 200, 80],
+                getColor: d => [0, 240, 240],
 
                 // Filtro
                 getFilterValue: f => {
@@ -164,8 +216,15 @@ export default class Search extends Component {
                 controller={{ dragRotate: false }}
                 onClick={({ object }) => {
                   if (object != null) {
-                    localStorage.setItem('owner', 'false');
-                    localStorage.setItem('perfil', JSON.stringify(object));
+                    if (object.maid.id === this.state.maidId) {
+                      localStorage.setItem('owner', 'true');
+                    } else {
+                      localStorage.setItem('owner', 'false');
+                      localStorage.setItem('perfilVisit', JSON.stringify(object));
+
+                      this.createInteraction(object.maid.id);
+                    }
+
                     this.setState({ rota: '/perfil' });
                   }
                 }}

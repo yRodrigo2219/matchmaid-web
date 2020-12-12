@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import DropDownCheck from '../../components/DropDownCheck';
 import CheckItem from '../../components/CheckItem';
 import ColorTag from '../../components/ColorTag';
+import PopupMap from '../../components/PopupMap';
 
 import { isValid } from '../../Constants';
 
@@ -18,17 +19,19 @@ export default class Perfil extends Component {
 
     this.state = {
       // controle
+      rate: 5,
       perfil: null,
       owner: false,
       imageFile: null,
       cpf: '',
-      id: 1,
+      id: -1,
       // user
       name: '',
       email: '',
       phoneNumber: '',
       bibliography: '',
       pricePerHour: 0,
+      password: '',
       image: '',
       // location
       longitude: 0,
@@ -66,8 +69,12 @@ export default class Perfil extends Component {
     this.updateLocal = this.updateLocal.bind(this);
     this.updateMaid = this.updateMaid.bind(this);
     this.updateDeS = this.updateDeS.bind(this);
+    this.sendAval = this.sendAval.bind(this);
     this.handleInputCheck = this.handleInputCheck.bind(this);
     this.handleInputImage = this.handleInputImage.bind(this);
+    this.closeMap = this.closeMap.bind(this);
+    this.openMap = this.openMap.bind(this);
+    this.getLonglat = this.getLonglat.bind(this);
   }
 
   verifyBase64() {
@@ -86,7 +93,95 @@ export default class Perfil extends Component {
     });
   }
 
+  closeMap() {
+    this.setState({
+      mapVisible: false
+    });
+  }
+
+  openMap() {
+    this.setState({
+      mapVisible: true
+    });
+  }
+
+  getLonglat([long, lat]) {
+    this.setState({
+      longitude: long,
+      latitude: lat
+    });
+  }
+
+  badInputsLocal = () => {
+    let message = '';
+
+    let keys = ['cep', 'uf', 'street', 'city', 'houseNumber', 'neighborhood'];
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+
+      if (!isValid[key].regex.test(this.state[key]))
+        return [true, isValid[key].message];
+    }
+
+    return [false, message];
+  }
+
+  badInputsMaid = () => {
+    let message = '';
+
+    let keys = ['email', 'password', 'name', 'cpf'];
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+
+      if (!isValid[key].regex.test(this.state[key]))
+        return [true, isValid[key].message];
+    }
+
+    return [false, message];
+  }
+
+  sendAval() {
+    let user = JSON.parse(localStorage.getItem('userInfo'));
+    let authToken = localStorage.getItem('accessToken');
+
+    let rate = {
+      clientId: user.maid.id || user.client.id,
+      clientName: user.maid.name || user.client.name,
+      stars: this.state.rate,
+      goodWork: true,
+      onTime: true,
+      arrivedOnTime: true,
+    };
+
+    fetch(`http://localhost:3333/create/maid/rating/${this.state.id}`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify(rate)
+    })
+      .then(() => {
+        alert("Avaliado com Sucesso!")
+        let user = this.state.perfil;
+        user.ratings.push(rate);
+        localStorage.setItem('userInfo', JSON.stringify(user));
+        this.setState({
+          perfil: user
+        });
+      })
+      .catch(() => alert("Erro ao avaliar"))
+  }
+
   updateLocal() {
+    let [isBad, message] = this.badInputsLocal();
+    if (isBad) {
+      alert(message)
+      return;
+    }
+
     let local = {
       longitude: this.state.longitude,
       latitude: this.state.latitude,
@@ -99,40 +194,72 @@ export default class Perfil extends Component {
       uf: this.state.uf
     };
 
+    let authToken = localStorage.getItem('accessToken');
+
     fetch(`http://localhost:3333/update/maid/location/${this.state.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
       },
-      body: JSON.stringify(local),
+      body: JSON.stringify(local)
     })
-      .then(res => res.json())
-      .then(res => alert(JSON.stringify(res)))
+      .then(res => res.text())
+      .then(_ => {
+        let user = this.state.perfil;
+        user.locations = local;
+        localStorage.setItem('userInfo', JSON.stringify(user));
+        alert('Atualizado com sucesso!')
+        this.setState({
+          perfil: user
+        });
+      })
+      .catch(res => alert(res))
   }
 
   updateMaid = async () => {
+    let [isBad, message] = this.badInputsMaid();
+    if (isBad) {
+      alert(message)
+      return;
+    }
+
     let maid = {
       cpf: this.state.cpf,
       name: this.state.name,
       email: this.state.email,
+      password: this.state.password,
       phoneNumber: this.state.phoneNumber,
-      birthDate: "1999-06-26T03:00:00.000Z",
+      birthDate: "1999-06-26T03:00:00",
       status: false,
       bibliography: this.state.bibliography,
       pricePerHour: this.state.pricePerHour,
       numberOfVisits: 0,
-      image: await this.getBase64(this.state.imageFile)
+      image: 'image'//await this.getBase64(this.state.imageFile)
     };
+
+    let authToken = localStorage.getItem('accessToken');
 
     fetch(`http://localhost:3333/update/maid/${this.state.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
       },
       body: JSON.stringify(maid),
     })
-      .then(res => res.json())
-      .then(res => alert(JSON.stringify(res)))
+      .then(res => res.text())
+      .then(_ => {
+        let user = this.state.perfil;
+        maid.id = this.state.id;
+        user.maid = maid;
+        localStorage.setItem('userInfo', JSON.stringify(user));
+        alert('Atualizado com sucesso!')
+        this.setState({
+          perfil: user
+        });
+      })
+      .catch(res => alert(res))
   }
 
   updateDeS() {
@@ -162,45 +289,51 @@ export default class Perfil extends Component {
       cook: this.state.cook
     };
 
+    let authToken = localStorage.getItem('accessToken');
+
     fetch(`http://localhost:3333/update/maid/disponibleDays/${this.state.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
       },
       body: JSON.stringify(dias),
     })
-      .then(res => res.json())
-      .then(res => {
-        if (res.error) {
-          alert(res.message);
-        } else {
-          fetch(`http://localhost:3333/update/maid/disponiblePeriod/${this.state.id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(hora),
-          })
-            .then(res => res.json())
-            .then(res => {
-              if (res.error) {
-                alert(res.message);
-              } else {
-                fetch(`http://localhost:3333/update/maid/services/${this.state.id}`, {
-                  method: 'PUT',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(serv),
-                })
-                  .then(res => res.json())
-                  .then(res => {
-                    alert(JSON.stringify(res.message))
-                  })
-              }
+      .then(res => res.text())
+      .then(_ => {
+        fetch(`http://localhost:3333/update/maid/disponiblePeriod/${this.state.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(hora),
+        })
+          .then(res => res.text())
+          .then(_ => {
+            fetch(`http://localhost:3333/update/maid/services/${this.state.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+              },
+              body: JSON.stringify(serv),
             })
-        }
+              .then(res => res.text())
+              .then(_ => {
+                let user = this.state.perfil;
+                user.disponibleDays = dias;
+                user.disponiblePeriods = hora;
+                user.services = serv;
+                localStorage.setItem('userInfo', JSON.stringify(user));
+                alert('Atualizado com sucesso!')
+                this.setState({
+                  perfil: user
+                });
+              })
+          })
       })
+      .catch(res => console.log(res))
   }
 
   handleInputChange(e) {
@@ -210,15 +343,18 @@ export default class Perfil extends Component {
   }
 
   handleInputImage(e) {
-    if (!e.target.files[0].type.includes('image/png') && !e.target.files[0].type.includes('image/jpeg') && !e.target.files[0].type.includes('image/jpg')) {
-      e.target.value = '';
-      alert("Tipo inválido");
-    } else if (e.target.files[0].size > 2150000) {
-      e.target.value = '';
-      alert("Arquivo excede o tamanho maximo(2MB)")
-    } else {
-      this.setState({ imageFile: e.target.files[0] })
+    if (!!e.target.type) {
+      if (!e.target.files[0].type.includes('image/png') && !e.target.files[0].type.includes('image/jpeg') && !e.target.files[0].type.includes('image/jpg')) {
+        e.target.value = '';
+        alert("Tipo inválido");
+      } else if (e.target.files[0].size > 2150000) {
+        e.target.value = '';
+        alert("Arquivo excede o tamanho maximo(2MB)");
+      } else {
+        this.setState({ imageFile: e.target.files[0] })
+      }
     }
+
   }
 
   handleInputCheck(e) {
@@ -228,7 +364,84 @@ export default class Perfil extends Component {
   }
 
   componentDidMount() {
-    this.setState({ perfil: JSON.parse(localStorage.getItem('perfil')), owner: ('true' === localStorage.getItem('owner')) });
+    if ('true' === localStorage.getItem('owner')) {
+      let user = JSON.parse(localStorage.getItem('userInfo'));
+      this.setState({
+        perfil: user,
+        owner: true,
+        id: user.maid.id,
+        cpf: user.maid.cpf,
+        // user
+        name: user.maid.name,
+        email: user.maid.email,
+        phoneNumber: user.maid.phoneNumber,
+        bibliography: user.maid.bibliography,
+        pricePerHour: user.maid.pricePerHour,
+        image: user.maid.image,
+        // location
+        longitude: user.locations.longitude,
+        latitude: user.locations.latitude,
+        street: user.locations.street,
+        houseNumber: user.locations.houseNumber,
+        complement: user.locations.complement,
+        neighborhood: user.locations.neighborhood,
+        city: user.locations.city,
+        cep: user.locations.cep,
+        uf: user.locations.uf,
+        // dias
+        monday: user.disponibleDays.monday,
+        tuesday: user.disponibleDays.tuesday,
+        wednesday: user.disponibleDays.wednesday,
+        thursday: user.disponibleDays.thursday,
+        friday: user.disponibleDays.friday,
+        saturday: user.disponibleDays.saturday,
+        sunday: user.disponibleDays.sunday,
+        // hora
+        morning: user.disponiblePeriods.morning,
+        afternoon: user.disponiblePeriods.afternoon,
+        night: user.disponiblePeriods.night,
+        // serv
+        nanny: user.services.nanny,
+        careHouse: user.services.careHouse,
+        cleanHouse: user.services.cleanHouse,
+        ironClothes: user.services.ironClothes,
+        washClothes: user.services.washClothes,
+        washDishes: user.services.washDishes,
+        cook: user.services.cook
+      });
+    } else {
+      this.setState({ perfil: JSON.parse(localStorage.getItem('perfilVisit')), owner: false });
+    }
+  }
+
+  renderDays() {
+    let d = this.state.perfil.disponibleDays;
+
+    return (
+      <div className='servico'>
+        <h2>Disponivel</h2>
+        {d.monday ? <ColorTag color='cyan'>Segunda</ColorTag> : ''}
+        {d.tuesday ? <ColorTag color='red'>Terça</ColorTag> : ''}
+        {d.wednesday ? <ColorTag color='purple'>Quarta</ColorTag> : ''}
+        {d.thursday ? <ColorTag color='blue'>Quinta</ColorTag> : ''}
+        {d.friday ? <ColorTag color='orange'>Sexta</ColorTag> : ''}
+        {d.saturday ? <ColorTag color='yellow'>Sabado</ColorTag> : ''}
+        {d.sunday ? <ColorTag color='lightblue'>Domingo</ColorTag> : ''}
+      </div>
+    );
+  }
+
+  renderHours() {
+    let d = this.state.perfil.disponiblePeriods;
+
+    return (
+      <div className='servico'>
+        <h2>Horários</h2>
+        {d.morning ? <ColorTag color='lightblue'>Manhã</ColorTag> : ''}
+        {d.afternoon ? <ColorTag color='red'>Tarde</ColorTag> : ''}
+        {d.night ? <ColorTag color='purple'>Noite</ColorTag> : ''}
+      </div>
+    );
   }
 
   renderServices() {
@@ -239,13 +452,55 @@ export default class Perfil extends Component {
         <h2>Serviços</h2>
         {s.nanny ? <ColorTag color='cyan'>Babá</ColorTag> : ''}
         {s.cleanHouse ? <ColorTag color='red'>Limpa a Casa</ColorTag> : ''}
-        {s.careHouse ? <ColorTag color='purple'>Cuida da Casa</ColorTag> : ''}
-        {s.ironClothes ? <ColorTag color='pink'>Passa a Roupa</ColorTag> : ''}
-        {s.washClothes ? <ColorTag color='purple'>Lava a Roupa</ColorTag> : ''}
-        {s.washDishes ? <ColorTag color='pink'>Lava a Louça</ColorTag> : ''}
-        {s.cook ? <ColorTag color='cyan'>Cozinha</ColorTag> : ''}
+        {s.careHouse ? <ColorTag color='blue'>Cuida da Casa</ColorTag> : ''}
+        {s.ironClothes ? <ColorTag color='lightblue'>Passa a Roupa</ColorTag> : ''}
+        {s.washClothes ? <ColorTag color='yellow'>Lava a Roupa</ColorTag> : ''}
+        {s.washDishes ? <ColorTag color='orange'>Lava a Louça</ColorTag> : ''}
+        {s.cook ? <ColorTag color='purple'>Cozinha</ColorTag> : ''}
       </div>
     );
+  }
+
+  avaliate() {
+    return (
+      <div className='send-rate'>
+        <h2>Enviar sua avaliação:</h2>
+        <div>
+          <span>Nota:</span>
+          <input type="range" min="0" max="5" value={this.state.rate} className='rating-slide' name='rate' onChange={this.handleInputChange} />
+        </div>
+        <button onClick={this.sendAval}>Enviar</button>
+      </div>
+    );
+  }
+
+  renderInteractions() {
+    let i = this.state.perfil.interactions;
+    let a = [];
+    let set = new Set();
+    i.forEach(it => {
+      set.add(it.clientId);
+    });
+
+    for (let i = 0; i < set.size; i++)
+      a.push(<img key={Math.random()} src='https://image.flaticon.com/icons/png/128/51/51256.png?ga=GA1.2.1391951570.1603459063' alt='1' />);
+    return a;
+  }
+
+  renderAval() {
+    let r = this.state.perfil.ratings;
+    let a = [];
+
+    for (let i = 0; (i < r.length) && i < 2; i++) {
+      a.push(<div key={Math.random()} className='aval'>
+        <img src='https://image.flaticon.com/icons/png/128/51/51256.png?ga=GA1.2.1391951570.1603459063' alt='1' />
+        <span>
+          <div className='name'>{r[r.length - 1 - i].clientName}</div>
+          <div>Avaliou com {r[r.length - 1 - i].stars} estrelas</div>
+        </span>
+      </div>);
+    }
+    return a;
   }
 
   render() {
@@ -275,10 +530,14 @@ export default class Perfil extends Component {
                 <Route path='/perfil/cfg'>
                   <div className='p2 h'>
                     <WhiteThing className='alterar-endereco'>
+                      <PopupMap visible={this.state.mapVisible} onClickAway={this.closeMap} onClick={this.getLonglat} view={{ longitude: this.state.longitude, latitude: this.state.latitude, zoom: 14, maxZoom: 20, }} data={[{ lngLat: [this.state.longitude, this.state.latitude] }]} />
                       <h2>Alterar Endereço</h2>
                       <div className='cca'>
                         <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} maxLength={150} regex={isValid.street.regex} tooltip={isValid.street.tip} />
-                        <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
+                        <div className='half'>
+                          <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
+                          <Button to='/perfil/cfg' name='Localização Precisa' onClick={this.openMap} />
+                        </div>
                         <div className='half'>
                           <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} maxLength={5} regex={isValid.houseNumber.regex} tooltip={isValid.houseNumber.tip} />
                           <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} maxLength={2} regex={isValid.uf.regex} tooltip={isValid.uf.tip} />
@@ -345,9 +604,15 @@ export default class Perfil extends Component {
                     </WhiteThing>
                     <WhiteThing className='interacoes'>
                       <h2>Últimas Interações</h2>
+                      <div>
+                        {this.renderInteractions()}
+                      </div>
                     </WhiteThing>
                     <WhiteThing className='avaliacoes'>
                       <h2>Últimas Avaliações</h2>
+                      <div>
+                        {this.renderAval()}
+                      </div>
                     </WhiteThing>
                   </div>
                 </Route>
@@ -363,6 +628,9 @@ export default class Perfil extends Component {
                   <span>{this.state.perfil.locations.cep}</span>
                 </div>
                 {this.renderServices()}
+                {this.renderDays()}
+                {this.renderHours()}
+                {this.state.owner ? this.avaliate() : this.avaliate()}
               </div>
             </div>
         }

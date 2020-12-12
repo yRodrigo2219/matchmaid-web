@@ -6,6 +6,8 @@ import WhiteThing from '../../components/WhiteThing';
 import DropDownCheck from '../../components/DropDownCheck';
 import CheckItem from '../../components/CheckItem';
 import Slider from '../../components/Slider';
+import PopupMap from '../../components/PopupMap';
+import Button from '../../components/Button';
 
 import { isValid } from '../../Constants';
 
@@ -15,6 +17,7 @@ export default class MaidSup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      mapVisible: false,
       // maid
       cpf: '',
       name: '',
@@ -57,6 +60,9 @@ export default class MaidSup extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.makeAccount = this.makeAccount.bind(this);
     this.handleInputCheck = this.handleInputCheck.bind(this);
+    this.closeMap = this.closeMap.bind(this);
+    this.openMap = this.openMap.bind(this);
+    this.getLonglat = this.getLonglat.bind(this);
   }
 
   handleInputChange(e) {
@@ -164,11 +170,31 @@ export default class MaidSup extends Component {
       });
   }
 
+  closeMap() {
+    this.setState({
+      mapVisible: false
+    });
+  }
+
+  openMap() {
+    this.setState({
+      mapVisible: true
+    });
+  }
+
+  getLonglat([long, lat]) {
+    this.setState({
+      longitude: long,
+      latitude: lat
+    });
+  }
+
   render() {
     return (
       <div className='content supsteps'>
         <span>Cadastro Maid</span>
         <WhiteThing className='shadow'>
+          <PopupMap visible={this.state.mapVisible} onClickAway={this.closeMap} onClick={this.getLonglat} />
           <BrowserRouter>
             <Switch>
               <Route path='/cadastro/maid/3'>
@@ -229,7 +255,10 @@ export default class MaidSup extends Component {
                     <div></div>
                   </div>
                   <Input name='Rua' type='text' onChange={this.handleInputChange} id='street' value={this.state.street} maxLength={150} regex={isValid.street.regex} tooltip={isValid.street.tip} />
-                  <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
+                  <div className='half'>
+                    <Input name='Bairro' type='text' onChange={this.handleInputChange} id='neighborhood' value={this.state.neighborhood} maxLength={50} regex={isValid.neighborhood.regex} tooltip={isValid.neighborhood.tip} />
+                    <Button to='/cadastro/maid/2' name='Localização Precisa' onClick={this.openMap} />
+                  </div>
                   <div className='half'>
                     <Input name='Número' type='text' onChange={this.handleInputChange} id='houseNumber' value={this.state.houseNumber} maxLength={5} regex={isValid.houseNumber.regex} tooltip={isValid.houseNumber.tip} />
                     <Input name='Estado' type='text' onChange={this.handleInputChange} id='uf' value={this.state.uf} maxLength={2} regex={isValid.uf.regex} tooltip={isValid.uf.tip} />

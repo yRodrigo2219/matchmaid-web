@@ -4,8 +4,6 @@ import Input from '../../components/Input';
 import WhiteThing from '../../components/WhiteThing';
 import NavButton from '../../components/NavButton';
 
-import { isValid } from '../../Constants';
-
 import './Login.css';
 
 export default class Login extends Component {
@@ -13,17 +11,47 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: '',
-      password: ''
+      email: 'email3@test.com',
+      password: '12345678'
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.doLogin = this.doLogin.bind(this);
   }
 
   handleInputChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  doLogin() {
+    let login = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    fetch('http://localhost:3333/login', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(login)
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        console.log(res)
+        if (res.error || res.err) {
+          alert('Erro no Login!')
+        } else {
+          localStorage.setItem('accessToken', res.accessToken);
+          localStorage.setItem('refreshToken', res.refreshToken);
+          localStorage.setItem('isMaid', res.isMaid);
+          localStorage.setItem('userInfo', JSON.stringify(res.user));
+          this.props.login();
+        }
+
+      })
   }
 
   render() {
@@ -34,12 +62,12 @@ export default class Login extends Component {
             <Button to='/cadastro' name='Fazer Cadastro' />
           </div>
           <div className='inputs'>
-            <Input name='Email' type='text' onChange={this.handleInputChange} id='email' value={this.state.email} maxLength={50} regex={isValid.email.regex} tooltip={isValid.email.tip} />
-            <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} regex={isValid.password.regex} tooltip={isValid.password.tip} />
+            <Input name='Email' type='text' onChange={this.handleInputChange} id='email' value={this.state.email} maxLength={50} />
+            <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} />
             <NavButton to='/login' name='Esqueci minha senha' />
           </div>
           <div className='login'>
-            <Button to='/login' name='Entrar' onClick={this.props.login} />
+            <Button to='/login' name='Entrar' onClick={this.doLogin} />
           </div>
         </WhiteThing>
       </div>
