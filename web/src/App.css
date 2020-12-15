@@ -84,6 +84,11 @@
   border-radius: 40px;
   font-size: 1.4em;
   padding-left: 15px;
+  user-select: initial;
+}
+
+textarea {
+  user-select: initial;
 }
 
 .input-space.errado {

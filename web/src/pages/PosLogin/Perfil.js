@@ -7,6 +7,7 @@ import DropDownCheck from '../../components/DropDownCheck';
 import CheckItem from '../../components/CheckItem';
 import ColorTag from '../../components/ColorTag';
 import PopupMap from '../../components/PopupMap';
+import Slider from '../../components/Slider';
 
 import { isValid } from '../../Constants';
 
@@ -25,6 +26,7 @@ export default class Perfil extends Component {
       imageFile: null,
       cpf: '',
       id: -1,
+      clientId: -1,
       // user
       name: '',
       email: '',
@@ -75,6 +77,7 @@ export default class Perfil extends Component {
     this.closeMap = this.closeMap.bind(this);
     this.openMap = this.openMap.bind(this);
     this.getLonglat = this.getLonglat.bind(this);
+    this.deleteAcc = this.deleteAcc.bind(this);
   }
 
   verifyBase64() {
@@ -142,20 +145,57 @@ export default class Perfil extends Component {
     return [false, message];
   }
 
+  deleteAcc() {
+    let c = window.confirm("Tem certeza que deseja DELETAR a conta?");
+    if (!c)
+      return;
+
+    let authToken = localStorage.getItem('accessToken');
+
+    fetch(`http://localhost:3333/delete/maid/${this.state.id}`, {
+      method: 'delete',
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    })
+      .then(res => res.text())
+      .then(res => {
+        alert("Conta deletada com sucesso!")
+        this.props.logout();
+      })
+      .catch(res => {
+        console.log(res)
+        alert("Erro ao deletar a conta!")
+        this.props.logout();
+      })
+  }
+
   sendAval() {
     let user = JSON.parse(localStorage.getItem('userInfo'));
     let authToken = localStorage.getItem('accessToken');
 
-    let rate = {
-      clientId: user.maid.id || user.client.id,
-      clientName: user.maid.name || user.client.name,
-      stars: this.state.rate,
-      goodWork: true,
-      onTime: true,
-      arrivedOnTime: true,
-    };
+    let rate;
+    if (user.maid) {
+      rate = {
+        clientId: this.state.clientId,
+        clientName: user.maid.name,
+        stars: this.state.rate,
+        goodWork: true,
+        onTime: true,
+        arrivedOnTime: true,
+      };
+    } else {
+      rate = {
+        clientId: user.client.id,
+        clientName: user.client.name,
+        stars: this.state.rate,
+        goodWork: true,
+        onTime: true,
+        arrivedOnTime: true,
+      }
+    }
 
-    fetch(`http://localhost:3333/create/maid/rating/${this.state.id}`, {
+    fetch(`http://localhost:3333/create/maid/rating/${this.state.perfil.maid.id}`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -165,12 +205,16 @@ export default class Perfil extends Component {
     })
       .then(() => {
         alert("Avaliado com Sucesso!")
-        let user = this.state.perfil;
-        user.ratings.push(rate);
-        localStorage.setItem('userInfo', JSON.stringify(user));
-        this.setState({
-          perfil: user
-        });
+        if (this.state.perfil.maid) {
+          let user = this.state.perfil;
+          user.ratings.push(rate);
+          this.setState({
+            perfil: user
+          });
+          if (this.state.perfil.maid.id === this.state.id) {
+            localStorage.setItem('userInfo', JSON.stringify(user));
+          }
+        }
       })
       .catch(() => alert("Erro ao avaliar"))
   }
@@ -237,6 +281,8 @@ export default class Perfil extends Component {
       numberOfVisits: 0,
       image: 'image'//await this.getBase64(this.state.imageFile)
     };
+
+    console.log(maid.bibliography)
 
     let authToken = localStorage.getItem('accessToken');
 
@@ -370,6 +416,7 @@ export default class Perfil extends Component {
         perfil: user,
         owner: true,
         id: user.maid.id,
+        clientId: parseInt(localStorage.getItem('clientId')),
         cpf: user.maid.cpf,
         // user
         name: user.maid.name,
@@ -410,7 +457,11 @@ export default class Perfil extends Component {
         cook: user.services.cook
       });
     } else {
-      this.setState({ perfil: JSON.parse(localStorage.getItem('perfilVisit')), owner: false });
+      this.setState({
+        perfil: JSON.parse(localStorage.getItem('perfilVisit')),
+        owner: false,
+        clientId: parseInt(localStorage.getItem('clientId'))
+      });
     }
   }
 
@@ -467,7 +518,7 @@ export default class Perfil extends Component {
         <h2>Enviar sua avaliação:</h2>
         <div>
           <span>Nota:</span>
-          <input type="range" min="0" max="5" value={this.state.rate} className='rating-slide' name='rate' onChange={this.handleInputChange} />
+          <Slider onChange={this.handleInputChange} value={this.state.rate} id='rate' min={0} max={5} />
         </div>
         <button onClick={this.sendAval}>Enviar</button>
       </div>
@@ -475,7 +526,7 @@ export default class Perfil extends Component {
   }
 
   renderInteractions() {
-    let i = this.state.perfil.interactions;
+    let i = this.state.perfil.getInteractions;
     let a = [];
     let set = new Set();
     i.forEach(it => {
@@ -556,9 +607,10 @@ export default class Perfil extends Component {
                         <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} maxLength={50} regex={isValid.name.regex} tooltip={isValid.name.tip} />
                         <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} regex={isValid.password.regex} tooltip={isValid.password.tip} />
                         <div className='half'>
-                          <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} />
+                          <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} regex={isValid.phoneNumber.regex} tooltip={isValid.phoneNumber.tip} />
                           <Input name='Imagem' type='file' id='imagem' onChange={this.handleInputImage} accept="image/*" />
                         </div>
+                        <textarea name="bibliography" rows="5" cols="1" onChange={this.handleInputChange} value={this.state.bibliography}></textarea>
                         <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateMaid} />
                       </div>
                     </WhiteThing>
@@ -592,6 +644,10 @@ export default class Perfil extends Component {
                         </div>
                         <Button name='Confirmar Alterações' to='/perfil/cfg' onClick={this.updateDeS} />
                       </div>
+                    </WhiteThing>
+                    <WhiteThing className='delete-account'>
+                      <h2>Deletar a conta</h2>
+                      <Button name='Deletar a conta' to='/perfil/cfg' onClick={this.deleteAcc} />
                     </WhiteThing>
                   </div>
                 </Route>
@@ -630,7 +686,7 @@ export default class Perfil extends Component {
                 {this.renderServices()}
                 {this.renderDays()}
                 {this.renderHours()}
-                {this.state.owner ? this.avaliate() : this.avaliate()}
+                {this.state.owner ? '' : this.avaliate()}
               </div>
             </div>
         }

@@ -21,6 +21,7 @@ export default class Search extends Component {
       // workaround
       rota: '',
       maidId: -1,
+      clientId: -1,
       // filter servico
       nanny: false,
       careHouse: false,
@@ -60,7 +61,7 @@ export default class Search extends Component {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ clientId: 1, maidId: maidId, accessTime: new Date().toISOString().slice(0, 19) })
+      body: JSON.stringify({ clientId: this.state.clientId, maidId: maidId, accessTime: new Date().toISOString().slice(0, 19) })
     })
       .then((res) => tryToken(res, 201))
       .then(([err, json]) => {
@@ -82,9 +83,15 @@ export default class Search extends Component {
     let isMaid = ('true' === localStorage.getItem('isMaid'));
     if (isMaid) {
       let user = JSON.parse(localStorage.getItem('userInfo'));
+      console.log(user)
       this.setState({
-        maidId: user.maid.id
+        maidId: user.maid.id,
+        clientId: parseInt(localStorage.getItem('clientId'))
       });
+    } else {
+      this.setState({
+        clientId: parseInt(localStorage.getItem('clientId'))
+      })
     }
 
     // get maids
@@ -103,7 +110,8 @@ export default class Search extends Component {
         }
         return false;
       })
-      .catch(_ => {
+      .catch(res => {
+        console.log(res);
         this.props.logout();
         return false;
       })) { }
@@ -113,7 +121,8 @@ export default class Search extends Component {
 
   MAP_VIEW = new MapView({ repeat: true });
 
-  MAP_STYLE = 'https://tiles.basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
+  //MAP_STYLE = 'https://tiles.basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
+  MAP_STYLE = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
 
   INITIAL_VIEW_STATE = {
     longitude: (JSON.parse(localStorage.getItem('userInfo')).locations.longitude || 0),
@@ -181,7 +190,6 @@ export default class Search extends Component {
                   return [d.locations.longitude, d.locations.latitude];
                 },
                 getColor: d => [0, 240, 240],
-
                 // Filtro
                 getFilterValue: f => {
                   let n = 0;

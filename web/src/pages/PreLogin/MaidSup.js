@@ -286,7 +286,7 @@ export default class MaidSup extends Component {
                   <Input name='Nome' type='text' onChange={this.handleInputChange} id='name' value={this.state.name} maxLength={50} regex={isValid.name.regex} tooltip={isValid.name.tip} />
                   <Input name='Senha' type='password' onChange={this.handleInputChange} id='password' value={this.state.password} maxLength={20} regex={isValid.password.regex} tooltip={isValid.password.tip} />
                   <div className='half'>
-                    <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} />
+                    <Input name='Celular' type='text' onChange={this.handleInputChange} id='phoneNumber' value={this.state.phoneNumber} maxLength={17} regex={isValid.phoneNumber.regex} tooltip={isValid.phoneNumber.tip} />
                     <Input name='CPF' type='text' onChange={this.handleInputChange} id='cpf' value={this.state.cpf} maxLength={14} regex={isValid.cpf.regex} tooltip={isValid.cpf.tip} />
                   </div>
                 </div>

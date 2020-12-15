@@ -10,17 +10,17 @@ const isValid = {
     tip: <span><div>Deve conter pelo menos 8 caracteres</div></span>
   },
   cpf: {
-    regex: /^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$/,
+    regex: /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}$/,
     message: 'CPF inválido',
-    tip: <span><div>Deve estar no modelo</div><div>XXX.XXX.XXX-XX</div></span>
+    tip: <span><div>Deve estar no modelo</div><div>ex: XXX.XXX.XXX-XX</div></span>
   },
   name: {
     regex: /^[a-zA-Z\u00C0-\u00FF ]{3,}$/,
     message: 'Nome inválido',
-    tip: <span><div>Deve conter pelo menos 3 letras</div><div>Não pode coter números</div></span>
+    tip: <span><div>Deve conter pelo menos 3 letras</div><div>Não pode conter números</div></span>
   },
   cep: {
-    regex: /^[0-9]{5}-[0-9]{3}$/,
+    regex: /^[0-9]{5}-?[0-9]{3}$/,
     message: 'CEP inválido',
     tip: <span><div>Deve estar no modelo</div><div>XXXXX-XXX</div></span>
   },
@@ -48,6 +48,11 @@ const isValid = {
     regex: /^[a-zA-Z0-9.\u00C0-\u00FF ]{5,}$/,
     message: 'Nome de rua inválido',
     tip: <span><div>Deve conter pelo menos 5 caracteres</div></span>
+  },
+  phoneNumber: {
+    regex: /^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$/,
+    message: 'Número de celular inválido',
+    tip: <span><div>Digite o DDD e o número do celular</div><div>(XX)XXXXXXXXX</div></span>
   }
 };
 

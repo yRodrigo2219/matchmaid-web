@@ -173,9 +173,26 @@
   color: white;
 }
 
-.content.perfil-visi .p3 .send-rate .rating-slide {
-  width: 11em;
+.content.perfil-visi .p3 .send-rate span {
+  vertical-align: super;
+}
+
+.content.perfil-visi .p3 .send-rate .slidecontainer {
+  display: inline-block;
+  width: 8em;
   margin-left: 0.5em;
+}
+
+.content.perfil-visi .p2 textarea {
+  margin-top: 10px;
+  border: 1px solid #30E3CA;
+  border-radius: 20px;
+  padding: 7px;
+  font-size: 1.2em;
+}
+
+.content.perfil-visi .p2 .delete-account .btn {
+  background-color: #FF7272;
 }
 
 .content.perfil-visi .p3 .send-rate button {

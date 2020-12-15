@@ -11,8 +11,8 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: 'email3@test.com',
-      password: '12345678'
+      email: '',
+      password: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -47,6 +47,7 @@ export default class Login extends Component {
           localStorage.setItem('accessToken', res.accessToken);
           localStorage.setItem('refreshToken', res.refreshToken);
           localStorage.setItem('isMaid', res.isMaid);
+          localStorage.setItem('clientId', res.clientId);
           localStorage.setItem('userInfo', JSON.stringify(res.user));
           this.props.login();
         }

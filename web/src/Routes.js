@@ -57,7 +57,7 @@ export default class Routes extends Component {
                 "Alterar perfil aqui"
               </Route>
               <Route path='/perfil'>
-                <Perfil />
+                <Perfil logout={this.logoutUser} />
               </Route>
               <Route path='/'>
                 <Search logout={this.logoutUser} />
